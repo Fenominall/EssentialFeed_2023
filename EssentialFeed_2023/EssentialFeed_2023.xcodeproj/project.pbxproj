@@ -10,6 +10,7 @@
 		4FA8708229A50089000554BF /* EssentialFeed_2023.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA8707929A50088000554BF /* EssentialFeed_2023.framework */; };
 		4FA8709229A500C2000554BF /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709129A500C2000554BF /* FeedItem.swift */; };
 		4FA8709429A507F3000554BF /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709329A507F3000554BF /* FeedLoader.swift */; };
+		4FA8709729A51859000554BF /* RemoteFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709629A51859000554BF /* RemoteFeedLoaderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,7 @@
 		4FA8708129A50089000554BF /* EssentialFeed_2023Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeed_2023Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA8709129A500C2000554BF /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		4FA8709329A507F3000554BF /* FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoader.swift; sourceTree = "<group>"; };
+		4FA8709629A51859000554BF /* RemoteFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoaderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		4FA8708529A50089000554BF /* EssentialFeed_2023Tests */ = {
 			isa = PBXGroup;
 			children = (
+				4FA8709629A51859000554BF /* RemoteFeedLoaderTests.swift */,
 			);
 			path = EssentialFeed_2023Tests;
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 					};
 					4FA8708029A50089000554BF = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -208,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FA8709729A51859000554BF /* RemoteFeedLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,14 +409,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YJ9NPM7MQ;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fenominall.EssentialFeed-2023Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -420,10 +432,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YJ9NPM7MQ;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fenominall.EssentialFeed-2023Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
