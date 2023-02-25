@@ -24,37 +24,38 @@ final class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertEqual(client.requesterURLs, [url])
     }
     
-    func test_load_deliversErrorOnClientError() {
-        let (sut, client) = makeSUT()
-        client.error = NSError(domain: "Test", code: 0)
-        
-        var capturedErrors = [RemoteFeedLoader.Error]()
-        sut.load { capturedErrors.append($0) }
-        
-        XCTAssertEqual(capturedErrors, [.connectivity])
-    }
-    
     
     // we need to test how many times the method(the client behaviour) was invoked
     func test_loadTwice_requestsDataFromURL() {
         let url = makeURL()
         let (sut, client) = makeSUT(url: url)
         
-        sut.load()
+        sut.load() 
         sut.load()
         
         XCTAssertEqual(client.requesterURLs, [url, url])
     }
 
+    func test_load_deliversErrorOnClientError() {
+        let (sut, client) = makeSUT()
+        
+        var capturedErrors = [RemoteFeedLoader.Error]()
+        sut.load { capturedErrors.append($0) }
+        
+        let clientError = NSError(domain: "Test", code: 0)
+        client.completions[0](clientError)
+        
+        XCTAssertEqual(capturedErrors, [.connectivity])
+    }
+    
     // MARK: - Helpers
     private class HTTPClientSpy: HTTPClient {
         
         var requesterURLs = [URL]()
-        var error: Error?
+        var completions = [(Error) -> Void]()
+        
         func get(from url: URL, completion: @escaping (Error) -> Void) {
-            if let error = error {
-                completion(error)
-            }
+            completions.append(completion)
             requesterURLs.append(url)
         }
     }
