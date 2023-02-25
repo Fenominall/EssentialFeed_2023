@@ -108,12 +108,12 @@ final class RemoteFeedLoaderTests: XCTestCase {
         when action: () -> Void,
         file: StaticString = #filePath,
         line: UInt = #line) {
-            var capturedErrors = [RemoteFeedLoader.Error]()
-            sut.load { capturedErrors.append($0) }
+            var capturedResults = [RemoteFeedLoader.Results]()
+            sut.load { capturedResults.append($0) }
                 
             action()
             
-            XCTAssertEqual(capturedErrors, [error])
+            XCTAssertEqual(capturedResults, [.failure(error)], file: file, line: line)
     }
     
     private func makeURL(_ url: URL
