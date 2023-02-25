@@ -66,19 +66,20 @@ final class RemoteFeedLoaderTests: XCTestCase {
     // MARK: - Helpers
     // It`s better to implement the Spy by just capturing the values
     private class HTTPClientSpy: HTTPClient {
+        
         private var messages = [
             (url: URL,
-             completion: (Error?, HTTPURLResponse?) -> Void)]()
+             completion: (HTTPClientResult) -> Void)]()
         var requesterURLs: [URL] {
             return messages.map { $0.url }
         }
         
-        func get(from url: URL, completion: @escaping (Error?, HTTPURLResponse?) -> Void) {
+        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
             messages.append((url, completion))
         }
         
         func complete(with error: Error, at index: Int = 0) {
-            messages[index].completion(error, nil)
+            messages[index].completion(.failure(error))
         }
         
         func complete(withStatusCode code: Int, at index: Int = 0) {
@@ -86,8 +87,8 @@ final class RemoteFeedLoaderTests: XCTestCase {
                 url: requesterURLs[index],
                 statusCode: code,
                 httpVersion: nil,
-                headerFields: nil)
-            messages[index].completion(nil, response)
+                headerFields: nil)!
+            messages[index].completion(.success(response))
         }
 
     }
