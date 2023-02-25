@@ -29,21 +29,39 @@ protocol HTTPClient {
 final class RemoteFeedLoaderTests: XCTestCase {
 
     func test_init_doesNotRequestDataFromURL() {
-        let url = makeURL()
-        let client = HTTPClientSpy()
-        _ = RemoteFeedLoader(url: url, client: client)
-        
+        let (_, client) = makeSUT()
         XCTAssertNil(client.requesterURL)
     }
     
     func test_load_requestsDataFromURL() {
-        let url = makeURL(URL(string: "https://a-url-given.com")!)
-        let client = HTTPClientSpy()
-        let sut = RemoteFeedLoader(url: url, client: client)
-
+        let url = makeURL()
+        let (sut, client) = makeSUT(url: url)
+        
         sut.load()
         
         XCTAssertEqual(client.requesterURL, url)
     }
 
+    // MARK: - Helpers
+    
+    private class HTTPClientSpy: HTTPClient {
+        var requesterURL: URL?
+        
+        func get(from url: URL) {
+            requesterURL = url
+        }
+    }
+    
+    private func makeSUT(url: URL = URL(string: "https://a-url.com")!)
+    -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
+        let client = HTTPClientSpy()
+        let sut = RemoteFeedLoader(url: url, client: client)
+        return (sut, client)
+    }
+    
+    
+    private func makeURL(_ url: URL
+                         = URL(string: "https://a-url.com")!) -> URL {
+        return url
+    }
 }
