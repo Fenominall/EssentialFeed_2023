@@ -19,19 +19,18 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let url = makeURL()
         let (sut, client) = makeSUT(url: url)
         
-        sut.load()
+        sut.load { _ in }
         
         XCTAssertEqual(client.requesterURLs, [url])
     }
-    
     
     // we need to test how many times the method(the client behaviour) was invoked
     func test_loadTwice_requestsDataFromURL() {
         let url = makeURL()
         let (sut, client) = makeSUT(url: url)
         
-        sut.load()
-        sut.load()
+        sut.load { _ in }
+        sut.load { _ in }
         
         XCTAssertEqual(client.requesterURLs, [url, url])
     }
