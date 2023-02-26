@@ -45,6 +45,9 @@ public final class RemoteFeedLoader {
     }
 }
 
+// Lesson
+// 1. Being careful  with the Decodable design because it can couple modules
+// 2. Cassisit approch by keeping to add test and refcatoring
 private class FeedItemsMapper {
     private struct Root: Decodable {
         let items: [RemoteFeedItem]
@@ -73,3 +76,4 @@ private class FeedItemsMapper {
         return root.items.map { $0.item }
     }
 }
+
