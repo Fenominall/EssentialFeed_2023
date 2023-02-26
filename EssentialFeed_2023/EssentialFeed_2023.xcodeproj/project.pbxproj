@@ -13,6 +13,7 @@
 		4FA8709229A500C2000554BF /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709129A500C2000554BF /* FeedItem.swift */; };
 		4FA8709429A507F3000554BF /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709329A507F3000554BF /* FeedLoader.swift */; };
 		4FA8709729A51859000554BF /* RemoteFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8709629A51859000554BF /* RemoteFeedLoaderTests.swift */; };
+		4FCAF41D29ABD3CB0046BA94 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCAF41C29ABD3CB0046BA94 /* HTTPClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		4FA8709129A500C2000554BF /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		4FA8709329A507F3000554BF /* FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoader.swift; sourceTree = "<group>"; };
 		4FA8709629A51859000554BF /* RemoteFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoaderTests.swift; sourceTree = "<group>"; };
+		4FCAF41C29ABD3CB0046BA94 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			children = (
 				4F6883CB29AB5DC30080F330 /* Helpers */,
 				4F68908629AA0A3400F5A94D /* RemoteFeedLoader.swift */,
+				4FCAF41C29ABD3CB0046BA94 /* HTTPClient.swift */,
 			);
 			path = FeedAPI;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA8709429A507F3000554BF /* FeedLoader.swift in Sources */,
+				4FCAF41D29ABD3CB0046BA94 /* HTTPClient.swift in Sources */,
 				4F68908729AA0A3400F5A94D /* RemoteFeedLoader.swift in Sources */,
 				4F6883CD29AB5DCF0080F330 /* HTTPURLResponse+StatusCode.swift in Sources */,
 				4FA8709229A500C2000554BF /* FeedItem.swift in Sources */,
