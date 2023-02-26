@@ -52,7 +52,9 @@ final class RemoteFeedLoaderTests: XCTestCase {
         
         samples.enumerated().forEach { index, code in
             expect(sut, toCompleteWithResult: .failure(.invalidData)) {
-                client.complete(withStatusCode: code, at: index)
+                // dummy json implementation
+                let json = makeItemsJSON([])
+                client.complete(withStatusCode: code, data: json, at: index)
             }
         }
     }
@@ -66,7 +68,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         }
     }
     
-    // MARK: - Checking Success Courses
+    // MARK: - Checking Success Courses for VALID JSON
     func test_load_deliversNoItemsOn200HTTPResponseWithEmptyList() {
         let (sut, client) = makeSUT()
         expect(sut, toCompleteWithResult: .success([])) {
@@ -95,34 +97,6 @@ final class RemoteFeedLoaderTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    // It`s better to implement the Spy by just capturing the values
-    private class HTTPClientSpy: HTTPClient {
-        
-        private var messages = [
-            (url: URL,
-             completion: (HTTPClientResult) -> Void)]()
-        var requesterURLs: [URL] {
-            return messages.map { $0.url }
-        }
-        
-        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
-            messages.append((url, completion))
-        }
-        
-        func complete(with error: Error, at index: Int = 0) {
-            messages[index].completion(.failure(error))
-        }
-        
-        func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
-            let response = HTTPURLResponse(
-                url: requesterURLs[index],
-                statusCode: code,
-                httpVersion: nil,
-                headerFields: nil)!
-            messages[index].completion(.success((data, response)))
-        }
-    }
-    
     private func makeSUT(url: URL = URL(string: "https://a-url.com")!)
     -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
@@ -130,6 +104,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         return (sut, client)
     }
     
+    // MARK: - JSON Helpers
     private func makeItem(
         id: UUID,
         description: String? = nil,
@@ -177,5 +152,33 @@ final class RemoteFeedLoaderTests: XCTestCase {
     private func makeURL(_ url: URL
                          = URL(string: "https://a-url.com")!) -> URL {
         return url
+    }
+    
+    // It`s better to implement the Spy by just capturing the values
+    private class HTTPClientSpy: HTTPClient {
+        
+        private var messages = [
+            (url: URL,
+             completion: (HTTPClientResult) -> Void)]()
+        var requesterURLs: [URL] {
+            return messages.map { $0.url }
+        }
+        
+        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
+            messages.append((url, completion))
+        }
+        
+        func complete(with error: Error, at index: Int = 0) {
+            messages[index].completion(.failure(error))
+        }
+        
+        func complete(withStatusCode code: Int, data: Data, at index: Int = 0) {
+            let response = HTTPURLResponse(
+                url: requesterURLs[index],
+                statusCode: code,
+                httpVersion: nil,
+                headerFields: nil)!
+            messages[index].completion(.success((data, response)))
+        }
     }
 }
