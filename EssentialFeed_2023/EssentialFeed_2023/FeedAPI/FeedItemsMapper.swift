@@ -2,15 +2,16 @@
 //  FeedItemsMapper.swift
 //  EssentialFeed_2023
 //
-//  Created by Fenominall on 2/26/23.
+//  Created by Fenominall on 2/27/23.
 //
 
 import Foundation
 
+
 // Lesson
 // 1. Being careful  with the Decodable design because it can couple modules
 // 2. Cassisit approch by keeping to add test and refcatoring
-final class FeedItemsMapper {
+internal final class FeedItemsMapper {
     private struct Root: Decodable {
         let items: [RemoteFeedItem]
     }
@@ -38,3 +39,4 @@ final class FeedItemsMapper {
         return root.items.map { $0.item }
     }
 }
+
