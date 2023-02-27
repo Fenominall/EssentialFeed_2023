@@ -14,8 +14,13 @@ import Foundation
 internal final class FeedItemsMapper {
     private struct Root: Decodable {
         let items: [RemoteFeedItem]
+        
+        // Eleminating mapping logic from the map function
+        var feed: [FeedItem] {
+            return items.map { $0.item }
+        }
     }
-
+    
     private struct RemoteFeedItem: Decodable {
         let id: UUID
         let description: String?
@@ -30,13 +35,15 @@ internal final class FeedItemsMapper {
                 imageURL: image)
         }
     }
-
-    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [FeedItem] {
-        guard response.isOK else {
-            throw RemoteFeedLoader.Error.invalidData
-        }
-        let root = try JSONDecoder().decode(Root.self, from: data)
-        return root.items.map { $0.item }
+    
+    internal static func map(
+        _ data: Data,
+        from response: HTTPURLResponse) -> RemoteFeedLoader.Results {
+        guard response.isOK,
+              let root = try? JSONDecoder().decode(Root.self, from: data) else
+            { return .failure(.invalidData) }
+            
+            return .success(root.feed)
     }
 }
 
