@@ -36,6 +36,8 @@ internal final class FeedItemsMapper {
         }
     }
     
+    // using gualed let self = self else { return } is tricky because if an isntance has been deallocated then the code bellow will not be executed.
+    // With the static method even if RemoteFeedLoader is deallocated, then FeedItemsMapper may still be invoked ann calling a completion block
     internal static func map(
         _ data: Data,
         from response: HTTPURLResponse) -> RemoteFeedLoader.Results {

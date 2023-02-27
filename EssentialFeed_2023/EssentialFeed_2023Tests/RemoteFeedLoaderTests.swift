@@ -96,6 +96,21 @@ final class RemoteFeedLoaderTests: XCTestCase {
         }
     }
     
+    // Guarantee we do not deliver a result (invoke the completion closure) after the 'RemoteFeedLoader' instance has been deallocated
+    func test_load_doesNotDeliverResultsAfterSUTInstanceHasBeenDeallocated() {
+        // given
+        let client = HTTPClientSpy()
+        var sut: RemoteFeedLoader?  = RemoteFeedLoader(url: makeURL(), client: client)
+        var capturedResults = [RemoteFeedLoader.Results]()
+        sut?.load(completion: { capturedResults.append($0) })
+        
+        sut = nil
+        // after SUT has been deallocated the client should not complete
+        client.complete(withStatusCode: 200, data: makeItemsJSON([]))
+        
+        XCTAssertTrue(capturedResults.isEmpty)
+    }
+    
     // MARK: - Helpers
     private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #filePath, line: UInt = #line)
     -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
