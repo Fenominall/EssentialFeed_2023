@@ -10,7 +10,7 @@ import Foundation
 
 // Lesson
 // 1. Being careful  with the Decodable design because it can couple modules
-// 2. Cassisit approch by keeping to add test and refcatoring
+// 2. Classisit approch by keeping to add test and refcatoring
 internal final class FeedItemsMapper {
     private struct Root: Decodable {
         let items: [RemoteFeedItem]
@@ -37,13 +37,13 @@ internal final class FeedItemsMapper {
     }
     
     // using gualed let self = self else { return } is tricky because if an isntance has been deallocated then the code bellow will not be executed.
-    // With the static method even if RemoteFeedLoader is deallocated, then FeedItemsMapper may still be invoked ann calling a completion block
+    // With the static method even if RemoteFeedLoader is deallocated, then FeedItemsMapper may still be invoked and calling a completion block
     internal static func map(
         _ data: Data,
         from response: HTTPURLResponse) -> RemoteFeedLoader.Results {
         guard response.isOK,
               let root = try? JSONDecoder().decode(Root.self, from: data) else
-            { return .failure(.invalidData) }
+            { return .failure(RemoteFeedLoader.Error.invalidData) }
             
             return .success(root.feed)
     }
