@@ -39,7 +39,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWith: .failure(RemoteFeedLoader.Error.connectivity)) {
+        expect(sut, toCompleteWith: failure(.connectivity)) {
             let clientError = NSError(domain: "Test", code: 0)
             client.complete(with: clientError)
         }
@@ -51,7 +51,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 404, 500]
         
         samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: .failure(RemoteFeedLoader.Error.invalidData)) {
+            expect(sut, toCompleteWith: failure(.invalidData)) {
                 // dummy json implementation
                 let json = makeItemsJSON([])
                 client.complete(withStatusCode: code, data: json, at: index)
@@ -62,7 +62,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWith: .failure(RemoteFeedLoader.Error.invalidData)) {
+            expect(sut, toCompleteWith: failure(.invalidData)) {
             let invalidJSON = Data("invalidJSON".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
         }
@@ -189,6 +189,10 @@ final class RemoteFeedLoaderTests: XCTestCase {
             wait(for: [exp], timeout: 1.0)
         }
     
+    // By using factory methods in the test scope, also prevent our test methods from braking in the future if we ever decide to change the production types agaiN!
+    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Results {
+        return .failure(error)
+    }
     private func makeURL(_ url: URL
                          = URL(string: "https://a-url.com")!) -> URL {
         return url
