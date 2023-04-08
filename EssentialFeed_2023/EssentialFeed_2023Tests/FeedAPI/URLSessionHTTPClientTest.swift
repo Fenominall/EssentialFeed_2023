@@ -68,8 +68,17 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertNotNil(receivedError)
     }
     
-    func test_getFromURL_failsOnAllNillValues() {
+    func test_getFromURL_failsOnAllInvalidRepresentationCases() {
         XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse(), error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse(), error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nil, error: anyNSError()))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse(), error: anyNSError()))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPURLResponse(), error: anyNSError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse(), error: anyNSError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: anyHTTPURLResponse(), error: anyNSError()))
+        XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse(), error: nil))
     }
     
     // MARK: - Helpers
@@ -104,9 +113,34 @@ final class URLSessionHTTPClientTest: XCTestCase {
             return receivedError
         }
     
+    private func anyNSError() -> NSError {
+        return NSError(domain: "any error",
+                       code: 1)
+    }
+    
     private func anyURL() -> URL {
         return URL(string: "https:any-url.com")!
     }
+    
+    private func anyData() -> Data {
+        return Data("invalid json".utf8)
+    }
+
+    private func nonHTTPURLResponse() -> URLResponse {
+        URLResponse(url: anyURL(),
+                    mimeType: nil,
+                    expectedContentLength: 0,
+                    textEncodingName: nil)
+    }
+    
+    private func anyHTTPURLResponse() -> HTTPURLResponse {
+        return HTTPURLResponse(
+            url: anyURL(),
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil)!
+    }
+    
     
     private class URLProtocolStub: URLProtocol {
         private static var stub: Stub?
