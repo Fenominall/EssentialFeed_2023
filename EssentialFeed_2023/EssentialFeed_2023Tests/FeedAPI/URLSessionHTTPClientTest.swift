@@ -7,6 +7,7 @@
 
 import XCTest
 import EssentialFeed_2023
+//import Foundation
 
 /// Four ways to test the Network:
 /// 1.End-to-end test - flaky and requires a backend
@@ -21,10 +22,14 @@ class URLSessionHTTPClient {
         self.session = session
     }
     
+    struct UnexpectedValuesRepresentation: Error {}
+    
     func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
         session.dataTask(with: url) { _, _, error in
             if let error = error {
                 completion(.failure(error))
+            } else {
+                completion(.failure(UnexpectedValuesRepresentation()))
             }
         }.resume()
     }
@@ -70,6 +75,23 @@ final class URLSessionHTTPClientTest: XCTestCase {
                 XCTAssertEqual(receivedError.code, requestError.code)
             default:
                 XCTFail("Expected failure with error \(requestError), got \(result) instead")
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func test_getFromURL_failsOnAllNillValues() {
+        URLProtocolStub.stub(data: nil, response: nil, error: nil)
+        
+        let exp = expectation(description: "Wait for completion")
+        
+        makeSUT().get(from: anyURL()) { result in
+            switch result {
+            case .failure:
+                break
+            default:
+                XCTFail("Expected failure, got \(result) instead")
             }
             exp.fulfill()
         }
