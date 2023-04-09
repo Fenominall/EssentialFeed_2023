@@ -59,7 +59,7 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: nonHTTPURLResponse(), error: nil))
     }
     
-    func test_getFromURL_sceedsOnHTTPURLResponseWithData() {
+    func test_getFromURL_suceedsOnHTTPURLResponseWithData() {
         let data = anyData()
         let response = anyHTTPURLResponse()
         
@@ -70,7 +70,7 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
     }
     
-    func test_getFromURL_sceedsWithEmptyDataOnHTTPURLResponseWithNilData() {
+    func test_getFromURL_suceedsWithEmptyDataOnHTTPURLResponseWithNilData() {
         let response = anyHTTPURLResponse()
         
         let receivedValues = resultValuesFor(data: nil, response: response, error: nil)
@@ -83,6 +83,7 @@ final class URLSessionHTTPClientTest: XCTestCase {
     
     
     // MARK: - Helpers
+    // when your helper functions contain assertions, make sure to pass the file and line arguments to the helper function, so you can forward it as arguments to any XCTAssert... calls. This way, Xcode can highlight the appropriate line of code that was responsible for test failures.
     private func makeSUT(file: StaticString = #filePath,
                          line: UInt = #line) -> HTTPClient {
         let sut = URLSessionHTTPClient()
