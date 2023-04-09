@@ -15,7 +15,7 @@ import EssentialFeed_2023
 /// 3. Protocl-based mocking - "With protocols with only care about a specific behaviour"
 /// 4. URLProtocol stubbing - Subclassing URLProtocol: NSObjcet
 
-class URLSessionHTTPClient {
+class URLSessionHTTPClient: HTTPClient {
     private let session: URLSession
     
     init(session: URLSession = .shared) {
@@ -107,7 +107,7 @@ final class URLSessionHTTPClientTest: XCTestCase {
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #filePath,
-                         line: UInt = #line) -> URLSessionHTTPClient {
+                         line: UInt = #line) -> HTTPClient {
         let sut = URLSessionHTTPClient()
         trackForMemoryLeak(sut, file: file, line: line)
         return sut
