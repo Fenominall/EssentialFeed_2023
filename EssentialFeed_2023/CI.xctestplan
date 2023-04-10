@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "32DD94F5-E89D-47E3-ABD2-E0F1383BA1FD",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+          "identifier" : "4FA8707829A50088000554BF",
+          "name" : "EssentialFeed_2023"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+        "identifier" : "4FA8708029A50089000554BF",
+        "name" : "EssentialFeed_2023Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+        "identifier" : "4F5DEBB129E33C6E00966E98",
+        "name" : "EssentialFeed_2023APIEndToEndTests"
+      }
+    }
+  ],
+  "version" : 1
+}

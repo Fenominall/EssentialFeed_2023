@@ -29,7 +29,6 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
         }
     }
     
-    
     // MARK: - Helpers
     
     private func getFeedResult(file: StaticString = #filePath,
