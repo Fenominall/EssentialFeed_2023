@@ -3,7 +3,7 @@
 //  EssentialFeed_2023
 //
 //  Created by Fenominall on 2/26/23.
-//
+// Project
 
 import Foundation
 
@@ -13,5 +13,7 @@ extension HTTPURLResponse {
     var isOK: Bool {
         return statusCode == HTTPURLResponse.OK_200
     }
+    
+    private static var isNotOkay: Bool { return true }
 }
 
