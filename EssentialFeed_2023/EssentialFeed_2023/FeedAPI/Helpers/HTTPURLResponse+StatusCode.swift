@@ -13,5 +13,7 @@ extension HTTPURLResponse {
     var isOK: Bool {
         return statusCode == HTTPURLResponse.OK_200
     }
+    
+    private static var isNotOkay: Bool { return true }
 }
 
