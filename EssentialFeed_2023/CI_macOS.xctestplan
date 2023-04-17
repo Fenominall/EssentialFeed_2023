@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "32DD94F5-E89D-47E3-ABD2-E0F1383BA1FD",
+      "id" : "955DF8DB-5B65-4D4F-BF29-7ED4005CCAE2",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -9,15 +9,7 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : {
-      "targets" : [
-        {
-          "containerPath" : "container:EssentialFeed_2023.xcodeproj",
-          "identifier" : "4FA8707829A50088000554BF",
-          "name" : "EssentialFeed_2023"
-        }
-      ]
-    }
+    "codeCoverage" : false
   },
   "testTargets" : [
     {
