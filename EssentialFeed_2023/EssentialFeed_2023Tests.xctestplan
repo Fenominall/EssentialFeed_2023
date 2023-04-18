@@ -1,15 +1,16 @@
 {
   "configurations" : [
     {
-      "id" : "07B437CD-A68B-4344-AD7A-45F35B3F5A75",
+      "id" : "06CE44B3-5974-4885-8165-FEBCFE897FDD",
       "name" : "Test Scheme Action",
       "options" : {
-        "threadSanitizerEnabled" : true
+
       }
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false
+    "codeCoverage" : false,
+    "threadSanitizerEnabled" : true
   },
   "testTargets" : [
     {
@@ -18,13 +19,6 @@
         "containerPath" : "container:EssentialFeed_2023.xcodeproj",
         "identifier" : "4FA8708029A50089000554BF",
         "name" : "EssentialFeed_2023Tests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
-        "identifier" : "4F5DEBB129E33C6E00966E98",
-        "name" : "EssentialFeed_2023APIEndToEndTests"
       }
     }
   ],
