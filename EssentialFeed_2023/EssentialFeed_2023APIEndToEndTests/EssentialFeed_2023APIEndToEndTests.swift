@@ -9,8 +9,8 @@ import XCTest
 import EssentialFeed_2023
 
 final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
+    
     func test_endToEndTestServerGETFeedREsult_matchesFixedTestAccountData() {
-
         switch getFeedResult() {
         case let .success(items)?:
             XCTAssertEqual(items.count, 8, "Expected 8 items in the test account feed.")
@@ -34,7 +34,12 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
     private func getFeedResult(file: StaticString = #filePath,
                                line: UInt = #line) -> LoadFeedResult? {
         let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
-        let client = URLSessionHTTPClient()
+        
+        // Using the .ephemeral strategy for URLSession in end to end test,
+        // to avoid geting a a failure if for instance one time the test successfully passed and the response was cahched
+        // and the next time I have not internet but the tests still passing because we have default caching
+        // Use ephemeral URLSession configuration to avoid sharing state across test executions (in-disk cache artifacts)
+        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(url: testServerURL, client: client)
         trackForMemoryLeak(client, file: file, line: line)
         trackForMemoryLeak(loader, file: file, line: line)

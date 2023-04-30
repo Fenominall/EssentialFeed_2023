@@ -40,7 +40,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         
         expect(sut, toCompleteWith: failure(.connectivity)) {
-            let clientError = NSError(domain: "Test", code: 0)
+            let clientError = NSError(domain: "Connectivity Error", code: 0)
             client.complete(with: clientError)
         }
     }
@@ -177,7 +177,7 @@ final class RemoteFeedLoaderTests: XCTestCase {
             wait(for: [exp], timeout: 1.0)
         }
     
-    // By using factory methods in the test scope, also prevent our test methods from braking in the future if we ever decide to change the production types agaiN!
+    // By using factory methods in the test scope, also prevent our test methods from braking in the future if we ever decide to change the production types again!
     private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Results {
         return .failure(error)
     }
