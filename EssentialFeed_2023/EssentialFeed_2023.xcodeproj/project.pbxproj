@@ -168,8 +168,8 @@
 		4FA8708529A50089000554BF /* EssentialFeed_2023Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4F4853F12A0103EF004FF676 /* Feed Cache */,
 				4F7AEE2129E1D8D500D2E54D /* Helpers */,
+				4F4853F12A0103EF004FF676 /* Feed Cache */,
 				4FDC2A2929ACD48D00F170E3 /* FeedAPI */,
 			);
 			path = EssentialFeed_2023Tests;
