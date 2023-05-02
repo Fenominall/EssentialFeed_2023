@@ -155,15 +155,6 @@ final class URLSessionHTTPClientTest: XCTestCase {
             return receivedResult
         }
     
-    private func anyNSError() -> NSError {
-        return NSError(domain: "any error",
-                       code: 1)
-    }
-    
-    private func anyData() -> Data {
-        return Data("invalid json".utf8)
-    }
-    
     private func nonHTTPURLResponse() -> URLResponse {
         URLResponse(url: anyURL(),
                     mimeType: nil,
