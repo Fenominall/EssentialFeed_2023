@@ -160,10 +160,6 @@ final class URLSessionHTTPClientTest: XCTestCase {
                        code: 1)
     }
     
-    private func anyURL() -> URL {
-        return URL(string: "https:any-url.com")!
-    }
-    
     private func anyData() -> Data {
         return Data("invalid json".utf8)
     }
