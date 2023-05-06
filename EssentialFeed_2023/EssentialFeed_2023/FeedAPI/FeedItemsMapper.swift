@@ -21,7 +21,7 @@ internal final class FeedItemsMapper {
         }
     }
     
-    // For decoding objects a safer way yo user models that represent json
+    // For decoding objects a safer way to use models that represent json
     private struct RemoteFeedItem: Decodable {
         let id: UUID
         let description: String?

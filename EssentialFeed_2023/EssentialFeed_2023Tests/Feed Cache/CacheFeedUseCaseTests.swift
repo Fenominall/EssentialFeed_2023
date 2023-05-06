@@ -39,12 +39,19 @@ final class CacheFeedUseCaseTests: XCTestCase {
     func test_save_requestsNewCacheInsertionWithTimeStampOnSuccessfullDeletion() {
         let timestamp = Date()
         let items = [uniqueItem(), uniqueItem()]
+        let localItems = items.map {
+            LocalFeedItem(
+                id: $0.id,
+                description:
+                    $0.description,
+                location: $0.location,
+                imageURL: $0.imageURL) }
         let (sut,store) = makeSUT(currentDate: { timestamp })
         
         sut.save(items) { _ in }
         store.completeDeletionSuccessfully()
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .inser(items, timestamp)])
+        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .inser(localItems, timestamp)])
     }
     
     func test_save_failsOnDeletionError() {
@@ -139,14 +146,14 @@ final class CacheFeedUseCaseTests: XCTestCase {
                  imageURL: anyURL())
     }
     
-    /// The FeedStore is a helper class representing the framework side to help us define the Use Case needs for its collaborator, making sure not to leak framework details into the Use Case.
-    /// To decouple the application from framework details, we dont let frameworks dicatte the Use Case interfaces (e.g., adding Codable requirements or CoreData managed contexts oarameters). We do so by test-driving the interfaces the Use case needs for its collaborators, rather than defining the interface upfront to facilitate a specific framework implementation.`
+    // The FeedStore is a helper class representing the framework side to help us define the Use Case needs for its collaborator, making sure not to leak framework details into the Use Case.
+    // To decouple the application from framework details, we dont let frameworks dicatte the Use Case interfaces (e.g., adding Codable requirements or CoreData managed contexts oarameters). We do so by test-driving the interfaces the Use case needs for its collaborators, rather than defining the interface upfront to facilitate a specific framework implementation.`
     private class FeedStoreSpy: FeedStore {
         
         // Unsing enum for testing to guarantee ate the same time which messages were invoiked with which values and in which order
         enum ReceivedMessages: Equatable {
             case deleteCachedFeed
-            case inser([FeedItem], Date)
+            case inser([LocalFeedItem], Date)
         }
         
         private (set) var receivedMessages = [ReceivedMessages]()
@@ -159,7 +166,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
             receivedMessages.append(.deleteCachedFeed)
         }
         
-        func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+        func insert(_ items: [LocalFeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
             insertionCompletions.append(completion)
             receivedMessages.append(.inser(items, timestamp))
         }
