@@ -30,7 +30,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         
         sut.save(uniqueItems().models) { _ in }
         store.completeDeletion(with: deletionError)
-        
+        	
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     
