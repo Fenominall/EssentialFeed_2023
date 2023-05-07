@@ -18,33 +18,31 @@ final class CacheFeedUseCaseTests: XCTestCase {
     
     func test_save_requestsCacheDeletion() {
         let (sut,store) = makeSUT()
-        let items = [uniqueItem(), uniqueItem()]
-        
-        sut.save(items) { _ in }
+
+        sut.save(uniqueImageFeed().models) { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
         let (sut,store) = makeSUT()
-        let items = [uniqueItem(), uniqueItem()]
         let deletionError = anyNSError()
         
-        sut.save(items) { _ in }
+        sut.save(uniqueImageFeed().models) { _ in }
         store.completeDeletion(with: deletionError)
-        
+        	
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     
     func test_save_requestsNewCacheInsertionWithTimeStampOnSuccessfullDeletion() {
         let timestamp = Date()
-        let items = [uniqueItem(), uniqueItem()]
+        let feed = uniqueImageFeed()
         let (sut,store) = makeSUT(currentDate: { timestamp })
         
-        sut.save(items) { _ in }
+        sut.save(feed.models) { _ in }
         store.completeDeletionSuccessfully()
         
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .inser(items, timestamp)])
+        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .inser(feed.local, timestamp)])
     }
     
     func test_save_failsOnDeletionError() {
@@ -79,7 +77,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResults = [Error?]()
-        sut?.save([uniqueItem()], completion: { receivedResults.append($0) })
+        sut?.save(uniqueImageFeed().models, completion: { receivedResults.append($0) })
         
         sut = nil
         store.completeDeletion(with: anyNSError())
@@ -92,7 +90,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
         var receivedResults = [LocalFeedLoader.SaveResult]()
-        sut?.save([uniqueItem()], completion: { receivedResults.append($0) })
+        sut?.save(uniqueImageFeed().models, completion: { receivedResults.append($0) })
         
         store.completeDeletionSuccessfully()
         sut = nil
@@ -122,7 +120,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
             let exp = expectation(description: "Wait for save cimpletion")
             
             var receivedError: Error?
-            sut.save([uniqueItem()]) { error in
+            sut.save(uniqueImageFeed().models) { error in
                 receivedError = error
                 exp.fulfill()
             }
@@ -132,21 +130,33 @@ final class CacheFeedUseCaseTests: XCTestCase {
             XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
         }
     
-    private func uniqueItem() -> FeedItem {
-        FeedItem(id: UUID(),
+    private func uniqueImage() -> FeedImage {
+        FeedImage(id: UUID(),
                  description: "descreption",
                  location: "location",
-                 imageURL: anyURL())
+                 url: anyURL())
     }
     
-    /// The FeedStore is a helper class representing the framework side to help us define the Use Case needs for its collaborator, making sure not to leak framework details into the Use Case.
-    /// To decouple the application from framework details, we dont let frameworks dicatte the Use Case interfaces (e.g., adding Codable requirements or CoreData managed contexts oarameters). We do so by test-driving the interfaces the Use case needs for its collaborators, rather than defining the interface upfront to facilitate a specific framework implementation.`
+    private func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
+        let feed = [uniqueImage(), uniqueImage()]
+        let localFeedImages = feed.map {
+            LocalFeedImage(
+                id: $0.id,
+                description:
+                    $0.description,
+                location: $0.location,
+                url: $0.url) }
+        return (feed, localFeedImages)
+    }
+    
+    // The FeedStore is a helper class representing the framework side to help us define the Use Case needs for its collaborator, making sure not to leak framework details into the Use Case.
+    // To decouple the application from framework details, we dont let frameworks dicatte the Use Case interfaces (e.g., adding Codable requirements or CoreData managed contexts oarameters). We do so by test-driving the interfaces the Use case needs for its collaborators, rather than defining the interface upfront to facilitate a specific framework implementation.`
     private class FeedStoreSpy: FeedStore {
         
         // Unsing enum for testing to guarantee ate the same time which messages were invoiked with which values and in which order
         enum ReceivedMessages: Equatable {
             case deleteCachedFeed
-            case inser([FeedItem], Date)
+            case inser([LocalFeedImage], Date)
         }
         
         private (set) var receivedMessages = [ReceivedMessages]()
@@ -159,9 +169,9 @@ final class CacheFeedUseCaseTests: XCTestCase {
             receivedMessages.append(.deleteCachedFeed)
         }
         
-        func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+        func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
             insertionCompletions.append(completion)
-            receivedMessages.append(.inser(items, timestamp))
+            receivedMessages.append(.inser(feed, timestamp))
         }
         
         func completeDeletion(with error: Error, at index: Int = 0) {
