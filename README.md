@@ -96,6 +96,17 @@ Given the customer doesn't have connectivity
 
 ---
 
+## Model Specs
+
+###Feed Image
+
+| Property      | Type                      |
+|---------------|---------------------------|
+| 'id'          | 'UUID'                    |
+| 'descreption' | 'String' (optional)       |
+| 'location'    | 'String' (optional)       |
+| 'url'         | 'URL'                     |
+
 ### Load Feed From Cache Use Case
 
 #### Primary course:

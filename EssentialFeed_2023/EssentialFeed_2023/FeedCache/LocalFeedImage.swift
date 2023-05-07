@@ -1,5 +1,5 @@
 //
-//  LocalFeedItem.swift
+//  LocalFeedImage.swift
 //  EssentialFeed_2023
 //
 //  Created by Fenominall on 5/6/23.
@@ -9,9 +9,9 @@ import Foundation
 
 import Foundation
 
-// Add 'LocalFeedItem' data transfer representation to decouple storage frameworks from 'FeedItem' data models
+// Add 'LocalFeedImage' data transfer representation to decouple storage frameworks from 'FeedImage' data models
 // Data Transfer Object to remove strong coupling between modules
-public struct LocalFeedItem: Equatable {
+public struct LocalFeedImage: Equatable {
     public let id: UUID
     public let description: String?
     public let location: String?
@@ -20,10 +20,10 @@ public struct LocalFeedItem: Equatable {
     public init(id: UUID,
                 description: String? = nil,
                 location: String? = nil,
-                imageURL: URL) {
+                url: URL) {
         self.id = id
         self.description = description
         self.location = location
-        self.imageURL = imageURL
+        self.imageURL = url
     }
 }
