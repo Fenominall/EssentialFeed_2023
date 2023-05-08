@@ -32,7 +32,7 @@ public class LocalFeedLoader {
             self.cache(feed, with: completion)
         }
     }
-    
+    // need to refactor
     public func load(completion: @escaping (LoadResult) -> Void) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }
