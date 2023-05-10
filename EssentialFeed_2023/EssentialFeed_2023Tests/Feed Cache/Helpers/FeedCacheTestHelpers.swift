@@ -40,7 +40,9 @@ extension Date {
         return Calendar(identifier: .gregorian)
             .date(byAdding: .day, value: days, to: self)!
     }
-    
+}
+
+extension Date {
     func adding(seconds: TimeInterval) -> Date {
         return self + seconds
     }
