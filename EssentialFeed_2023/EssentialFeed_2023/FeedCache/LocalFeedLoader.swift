@@ -7,26 +7,38 @@
 
 import Foundation
 
-public class LocalFeedLoader {
-    private let store: FeedStore
+// Business rules can be extracted to it`s own model and be reused across applications later
+private final class FeedCachePolicy {
     private let currentDate: () -> Date
     private let calendar = Calendar(identifier: .gregorian)
-        
-    public init(store: FeedStore, currentDate: @escaping () -> Date) {
-        self.store = store
+    
+    init(currentDate: @escaping () -> Date) {
         self.currentDate = currentDate
     }
-    
     
     private var maxCacheAge: Int {
         7
     }
-    private func validate(_ timestamp: Date) -> Bool {
+    func validate(_ timestamp: Date) -> Bool {
         guard let maxCacheAge = calendar
             .date(byAdding: .day, value: maxCacheAge, to: timestamp) else {
             return false
         }
         return currentDate() < maxCacheAge
+    }
+}
+
+
+// Controller Boundary - Holds application specific logic
+public class LocalFeedLoader {
+    private let store: FeedStore
+    private let currentDate: () -> Date
+    private let cachePolicy: FeedCachePolicy
+    
+    public init(store: FeedStore, currentDate: @escaping () -> Date) {
+        self.store = store
+        self.currentDate = currentDate
+        self.cachePolicy = FeedCachePolicy(currentDate: currentDate)
     }
 }
 
@@ -68,7 +80,7 @@ extension LocalFeedLoader: FeedLoader {
             case let .failure(error):
                 completion(.failure(error))
                 
-            case .found(let feed, let timestamp) where self.validate(timestamp):
+            case .found(let feed, let timestamp) where self.cachePolicy.validate(timestamp):
                 completion(.success(feed.toModels()))
                 
             case .found, .empty:
@@ -86,7 +98,7 @@ extension LocalFeedLoader {
             switch result {
             case .failure(_):
                 self.store.deleteCachedFeed { _ in }
-            case let .found(_, timestamp) where !self.validate(timestamp):
+            case let .found(_, timestamp) where !self.cachePolicy.validate(timestamp):
                 self.store.deleteCachedFeed { _ in }
             case .empty, .found: break
             }
