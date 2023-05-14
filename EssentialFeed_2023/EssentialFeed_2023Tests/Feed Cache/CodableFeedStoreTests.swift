@@ -10,7 +10,7 @@ import EssentialFeed_2023
 
 //- Retrieve
 //    ✅ Empty cache returns empty
-//    - Empty cache twice returns empty (no side-effects)
+//    ✅ Empty cache twice returns empty (no side-effects)
 //    - Non-empty cache returns data
 //    - Non-empty cache twice returns same data (no side-effects)
 //    - Error returns error (if applicable, e.g., invalid data)
@@ -29,14 +29,50 @@ import EssentialFeed_2023
 //- Side-effects must run serially to avoid race-conditions
 
 public final class CodableFeedStore {
-    func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
-        completion(.empty)
+    
+    private struct Cache: Codable {
+        let feed: [LocalFeedImage]
+        let timeStamp: Date
     }
+    
+    private let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "image-feed.store")
+    
+    func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
+        guard let data = try? Data(contentsOf: storeURL) else {
+            return completion(.empty)
+        }
+        let decoder = JSONDecoder()
+        let cache = try! decoder.decode(Cache.self, from: data)
+        completion(.found(feed: cache.feed, timestamp: cache.timeStamp))
+    }
+    
+    func insert(_ feed: [LocalFeedImage],
+                timestamp: Date,
+                completion: @escaping FeedStore.InsertionCompletion) {
+        let encoder = JSONEncoder()
+        let encoded = try! encoder.encode(Cache(feed: feed, timeStamp: timestamp))
+        try! encoded.write(to: storeURL)
+        completion(nil)
+    }
+    
 }
 
 
 final class CodableFeedStoreTests: XCTestCase {
-
+    override func setUp() {
+        super.setUp()
+        
+        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "image-feed.store")
+        try? FileManager.default.removeItem(at: storeURL)
+    }
+    
+    override func tearDown() {
+        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "image-feed.store")
+        try? FileManager.default.removeItem(at: storeURL)
+        super.tearDown()
+    }
+    
+    
     func test_retrieve_deliversEmptyCacheonEmptyCache() {
         let sut = CodableFeedStore()
         
@@ -71,4 +107,28 @@ final class CodableFeedStoreTests: XCTestCase {
         }
         wait(for: [exp], timeout: 1.0)
     }
+    
+    func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
+        let sut = CodableFeedStore()
+        let feed = uniqueImageFeed().local
+        let timestamp = Date()
+        
+        let exp = expectation(description: "Wait for cache retrieval")
+        sut.insert(feed, timestamp: timestamp) { insertionError in
+            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+            
+            sut.retrieve { retrieveResult in
+                switch retrieveResult {
+                case let .found(retrieveFeed, retrieveTimestamp):
+                    XCTAssertEqual(retrieveFeed, feed)
+                    XCTAssertEqual(retrieveTimestamp, timestamp)
+                default:
+                    XCTFail("Expected found result with feed \(feed) and timestamp \(timestamp) got \(retrieveResult) instead.")
+                }
+                exp.fulfill()
+            }
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
 }

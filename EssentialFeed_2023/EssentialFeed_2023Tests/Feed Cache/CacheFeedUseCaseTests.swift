@@ -18,9 +18,9 @@ final class CacheFeedUseCaseTests: XCTestCase {
     
     func test_save_requestsCacheDeletion() {
         let (sut,store) = makeSUT()
-
-        sut.save(uniqueImageFeed().models) { _ in }
         
+        sut.save(uniqueImageFeed().models) { _ in }
+
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     

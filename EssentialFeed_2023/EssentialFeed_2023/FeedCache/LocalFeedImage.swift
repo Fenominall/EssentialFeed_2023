@@ -11,7 +11,7 @@ import Foundation
 
 // Add 'LocalFeedImage' data transfer representation to decouple storage frameworks from 'FeedImage' data models
 // Data Transfer Object to remove strong coupling between modules
-public struct LocalFeedImage: Equatable {
+public struct LocalFeedImage: Equatable, Codable {
     public let id: UUID
     public let description: String?
     public let location: String?
