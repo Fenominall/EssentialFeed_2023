@@ -39,7 +39,7 @@ public final class CodableFeedStore {
         }
     }
     
-    // Codable confirmation is not suitable for LocalFeedImage in this case cause it`s a framework requirement and it might cause a problem when using other persistnace frameworks.
+    //    Move 'Codeable' conformance from the framework-agnostic 'LocalFeedImage'  type to the new framework-specific 'CodableFeedImage' type. The 'CodeableFeedImage' is a private type within the framework implementation since the 'Codable' requirement is a framework-specific detail.
     // In this case the DTO with a mapping used instead.
     private struct CodableFeedImage: Codable {
         private let id: UUID
@@ -62,7 +62,6 @@ public final class CodableFeedStore {
                 url: imageURL)
         }
     }
-    
     
     private let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "image-feed.store")
     
@@ -105,7 +104,7 @@ final class CodableFeedStoreTests: XCTestCase {
     
     
     func test_retrieve_deliversEmptyCacheonEmptyCache() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         
         let exp = expectation(description: "Wait for cache retrieval")
         sut.retrieve { result in
@@ -121,7 +120,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         
         let exp = expectation(description: "Wait for cache retrieval")
         sut.retrieve { firstResult in
@@ -140,7 +139,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieveAfterInsertingToEmptyCache_deliversInsertedValues() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let feed = uniqueImageFeed().local
         let timestamp = Date()
         
@@ -160,6 +159,12 @@ final class CodableFeedStoreTests: XCTestCase {
             }
         }
         wait(for: [exp], timeout: 1.0)
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeSUT() -> CodableFeedStore {
+        return CodableFeedStore()
     }
     
 }
