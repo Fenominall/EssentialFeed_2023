@@ -17,7 +17,7 @@ import EssentialFeed_2023
 //    - Error twice returns same error (if applicable, e.g., invalid data)
 //
 //- Insert
-//    - To empty cache stores data
+//    ✅ To empty cache stores data
 //    - To non-empty cache overrides previous data with new data
 //    - Error (if applicable, e.g., no write permission)
 //
@@ -31,9 +31,38 @@ import EssentialFeed_2023
 public final class CodableFeedStore {
     
     private struct Cache: Codable {
-        let feed: [LocalFeedImage]
+        let feed: [CodableFeedImage]
         let timeStamp: Date
+        
+        var localFeed: [LocalFeedImage] {
+            return feed.map { $0.local }
+        }
     }
+    
+    // Codable confirmation is not suitable for LocalFeedImage in this case cause it`s a framework requirement and it might cause a problem when using other persistnace frameworks.
+    // In this case the DTO with a mapping used instead.
+    private struct CodableFeedImage: Codable {
+        private let id: UUID
+        private let description: String?
+        private let location: String?
+        private let imageURL: URL
+        
+        init(_ image: LocalFeedImage) {
+            self.id = image.id
+            self.description = image.description
+            self.location = image.location
+            self.imageURL = image.imageURL
+        }
+        
+        var local: LocalFeedImage {
+            return LocalFeedImage(
+                id: id,
+                description: description,
+                location: location ,
+                url: imageURL)
+        }
+    }
+    
     
     private let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "image-feed.store")
     
@@ -43,14 +72,16 @@ public final class CodableFeedStore {
         }
         let decoder = JSONDecoder()
         let cache = try! decoder.decode(Cache.self, from: data)
-        completion(.found(feed: cache.feed, timestamp: cache.timeStamp))
+        completion(.found(feed: cache.localFeed, timestamp: cache.timeStamp))
     }
     
     func insert(_ feed: [LocalFeedImage],
                 timestamp: Date,
                 completion: @escaping FeedStore.InsertionCompletion) {
         let encoder = JSONEncoder()
-        let encoded = try! encoder.encode(Cache(feed: feed, timeStamp: timestamp))
+        let cache = Cache(feed: feed.map(CodableFeedImage.init),
+                          timeStamp: timestamp)
+        let encoded = try! encoder.encode(cache)
         try! encoded.write(to: storeURL)
         completion(nil)
     }
