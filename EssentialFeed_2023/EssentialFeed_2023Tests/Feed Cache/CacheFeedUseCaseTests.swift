@@ -18,9 +18,9 @@ final class CacheFeedUseCaseTests: XCTestCase {
     
     func test_save_requestsCacheDeletion() {
         let (sut,store) = makeSUT()
-
-        sut.save(uniqueImageFeed().models) { _ in }
         
+        sut.save(uniqueImageFeed().models) { _ in }
+
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     
@@ -129,23 +129,4 @@ final class CacheFeedUseCaseTests: XCTestCase {
             
             XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
         }
-    
-    private func uniqueImage() -> FeedImage {
-        FeedImage(id: UUID(),
-                 description: "descreption",
-                 location: "location",
-                 url: anyURL())
-    }
-    
-    private func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
-        let feed = [uniqueImage(), uniqueImage()]
-        let localFeedImages = feed.map {
-            LocalFeedImage(
-                id: $0.id,
-                description:
-                    $0.description,
-                location: $0.location,
-                url: $0.url) }
-        return (feed, localFeedImages)
-    }
 }
