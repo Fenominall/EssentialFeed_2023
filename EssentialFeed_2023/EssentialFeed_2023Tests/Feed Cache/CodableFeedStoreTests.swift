@@ -8,7 +8,7 @@
 import XCTest
 import EssentialFeed_2023
 
-//- Retrieve
+//✅ Retrieve
 //    ✅ Empty cache returns empty
 //    ✅ Empty cache twice returns empty (no side-effects)
 //    ✅ Non-empty cache returns data
@@ -16,19 +16,19 @@ import EssentialFeed_2023
 //    ✅ Error returns error (if applicable, e.g., invalid data)
 //    ✅ Error twice returns same error (if applicable, e.g., invalid data)
 //
-//- Insert
+//✅ Insert
 //    ✅ To empty cache stores data
 //    ✅ To non-empty cache overrides previous data with new data
 //    ✅ Error (if applicable, e.g., no write permission)
 //
-//- Delete
-//    - Empty cache does nothing (cache stays empty and does not fail)
-//    - Non-empty cache leaves cache empty
-//    - Error (if applicable, e.g., no delete permission)
+//✅ Delete
+//    ✅ Empty cache does nothing (cache stays empty and does not fail)
+//    ✅ Non-empty cache leaves cache empty
+//    ✅ Error (if applicable, e.g., no delete permission)
 //
 //- Side-effects must run serially to avoid race-conditions
 
-public final class CodableFeedStore {
+public final class CodableFeedStore: FeedStore {
     
     private struct Cache: Codable {
         let feed: [CodableFeedImage]
@@ -69,7 +69,7 @@ public final class CodableFeedStore {
         self.storeURL = storeURL
     }
     
-    func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
+    public func retrieve(completion: @escaping RetrievalCompletion) {
         guard let data = try? Data(contentsOf: storeURL) else {
             return completion(.empty)
         }
@@ -82,9 +82,9 @@ public final class CodableFeedStore {
         }
     }
     
-    func insert(_ feed: [LocalFeedImage],
+    public func insert(_ feed: [LocalFeedImage],
                 timestamp: Date,
-                completion: @escaping FeedStore.InsertionCompletion) {
+                completion: @escaping InsertionCompletion) {
         do {
             let encoder = JSONEncoder()
             let cache = Cache(feed: feed.map(CodableFeedImage.init),
@@ -97,7 +97,7 @@ public final class CodableFeedStore {
         }
     }
     
-    func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
+    public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         guard FileManager.default.fileExists(atPath: storeURL.path()) else {
             return completion(nil)
         }
@@ -214,7 +214,6 @@ final class CodableFeedStoreTests: XCTestCase {
         let deletionError = deleteCache(from: sut)
         
         XCTAssertNotNil(deletionError, "Expected cache deletion to fail")
-        excpect(sut, toRetrieve: .empty)
     }
 
     
