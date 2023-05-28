@@ -19,7 +19,7 @@ import EssentialFeed_2023
 //- Insert
 //    ✅ To empty cache stores data
 //    ✅ To non-empty cache overrides previous data with new data
-//    - Error (if applicable, e.g., no write permission)
+//    ✅ Error (if applicable, e.g., no write permission)
 //
 //- Delete
 //    - Empty cache does nothing (cache stays empty and does not fail)
@@ -96,6 +96,11 @@ public final class CodableFeedStore {
             completion(error)
         }
     }
+    
+    func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
+        completion(nil)
+    }
+
     
 }
 
@@ -175,6 +180,19 @@ final class CodableFeedStoreTests: XCTestCase {
         
         let insertionError = insert((feed, timestamp), to: sut)
         XCTAssertNotNil(insertionError, "Expected cache insertion to fail with error")
+    }
+    
+    func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
+        let exp = expectation(description: "Wait for cache deletion")
+        
+        sut.deleteCachedFeed { deletionError in
+            XCTAssertNil(deletionError, "Expected empty cache deletion to succeed")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+        
+        excpect(sut, toRetrieve: .empty)
     }
     
     // MARK: - Helpers
