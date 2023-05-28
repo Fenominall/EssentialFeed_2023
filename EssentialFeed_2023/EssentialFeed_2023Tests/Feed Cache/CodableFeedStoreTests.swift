@@ -11,7 +11,7 @@ import EssentialFeed_2023
 //- Retrieve
 //    ✅ Empty cache returns empty
 //    ✅ Empty cache twice returns empty (no side-effects)
-//    - Non-empty cache returns data
+//    ✅ Non-empty cache returns data
 //    - Non-empty cache twice returns same data (no side-effects)
 //    - Error returns error (if applicable, e.g., invalid data)
 //    - Error twice returns same error (if applicable, e.g., invalid data)
@@ -157,6 +157,32 @@ final class CodableFeedStoreTests: XCTestCase {
                     XCTFail("Expected found result with feed \(feed) and timestamp \(timestamp) got \(retrieveResult) instead.")
                 }
                 exp.fulfill()
+            }
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
+        let sut = makeSUT()
+        let feed = uniqueImageFeed().local
+        let timestamp = Date()
+        let exp = expectation(description: "Wait for cache retrieval")
+        
+        sut.insert(feed, timestamp: timestamp) { insertionError in
+            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+            
+            sut.retrieve { firstResult in
+                sut.retrieve { secondResult in
+                    switch (firstResult, secondResult) {
+                    case let (.found(expectedFeed, expectedTimestamp), .found(retrievedFeed, retrievedTimestamp)):
+                        XCTAssertEqual(retrievedFeed, expectedFeed)
+                        XCTAssertEqual(retrievedTimestamp, expectedTimestamp)
+                        
+                    default:
+                        XCTFail("Expected retrieving twice from non empty cache to deliver the same found result with feed \(feed) and timestamp \(timestamp), got\(firstResult) and \(secondResult) instead")
+                    }
+                    exp.fulfill()
+                }
             }
         }
         wait(for: [exp], timeout: 1.0)
