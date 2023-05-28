@@ -146,7 +146,7 @@ final class CodableFeedStoreTests: XCTestCase {
         
         try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
         
-        excpect(sut, toRetrieve: .failure(anyNSError()))
+        excpect(sut, toRetrieveTwice: .failure(anyNSError()))
     }
     
     // MARK: - Helpers
@@ -189,7 +189,7 @@ final class CodableFeedStoreTests: XCTestCase {
             sut.retrieve { retrieveResult in
                 switch (expectedResult, retrieveResult) {
                 case (.empty, .empty),
-                     (.failure, .failure):
+                    (.failure, .failure):
                     break
                 case let (.found(expectedFeed, expectedTimestamp), .found(retrieviedFeed, retrievedTimestamp)):
                     XCTAssertEqual(retrieviedFeed, expectedFeed, file: file, line: line)
