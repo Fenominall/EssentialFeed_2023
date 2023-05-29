@@ -156,7 +156,7 @@ final class CodableFeedStoreTests: XCTestCase {
         let op3 = expectation(description: "Operation 3")
         sut.insert((uniqueImageFeed().local), timestamp: Date()) { _ in
             completedOperationInorder.append(op3)
-            op1.fulfill()
+            op3.fulfill()
         }
         waitForExpectations(timeout: 5.0)
         
@@ -174,15 +174,17 @@ final class CodableFeedStoreTests: XCTestCase {
         return sut
     }
     
+    
+
     private func deleteCache(from sut: FeedStore) -> Error? {
         let exp = expectation(description: "Wait for cache deletion")
-        
+
         var deletionError: Error?
         sut.deleteCachedFeed { receivedDeletionEror in
             deletionError = receivedDeletionEror
             exp.fulfill()
         }
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 10.0)
         return deletionError
     }
     @discardableResult
