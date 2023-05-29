@@ -93,7 +93,7 @@ public final class CodableFeedStore: FeedStore {
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         let storeURL = self.storeURL
-        // The operations with side effects blocked with a flag to aviod concurency issue
+        // The operations with side effects blocked with a flag to aviod concurency issue with other methods retrieve/insert
         queue.async(flags: .barrier) {
             guard FileManager.default.fileExists(atPath: storeURL.path()) else {
                 return completion(nil)
