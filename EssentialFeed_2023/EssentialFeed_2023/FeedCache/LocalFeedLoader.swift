@@ -48,6 +48,7 @@ extension LocalFeedLoader {
 extension LocalFeedLoader: FeedLoader {
     public typealias LoadResult = LoadFeedResult
 
+    //  Query should only return a result and should not have side-effects (does not change the observable state of the system).
     public func load(completion: @escaping (LoadResult) -> Void) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }
@@ -67,6 +68,7 @@ extension LocalFeedLoader: FeedLoader {
 }
 
 extension LocalFeedLoader {
+    // A Command changes the state of a system (side-effects) but does not return a value.
     public func validateCache() {
         store.retrieve { [weak self] result in
             guard let self = self else { return }

@@ -40,7 +40,8 @@ final class CodableFeedStoreTests: XCTestCase {
         super.tearDown()
     }
     
-    func test_retrieve_deliversEmptyCacheonEmptyCache() {
+    // MARK: - Retrieve
+    func test_retrieve_deliversEmptyOnEmptyCache() {
         let sut = makeSUT()
         
         excpect(sut, toRetrieve: .empty)
@@ -81,6 +82,7 @@ final class CodableFeedStoreTests: XCTestCase {
         excpect(sut, toRetrieveTwice: .failure(anyNSError()))
     }
     
+    // MARK: - Insert
     func test_insert_overridesPreviouslyInsertedCacheValues() {
         let sut = makeSUT()
         
@@ -105,6 +107,7 @@ final class CodableFeedStoreTests: XCTestCase {
         XCTAssertNotNil(insertionError, "Expected cache insertion to fail with error")
     }
     
+    // MARK: - Delete
     func test_delete_hasNoSideEffectsOnEmptyCache() {
         let sut = makeSUT()
         
@@ -132,6 +135,34 @@ final class CodableFeedStoreTests: XCTestCase {
         
         XCTAssertNotNil(deletionError, "Expected cache deletion to fail")
     }
+    
+    // MARK: - Side Effects
+    func test_storeSideEffetcs_runSerially() {
+        let sut = makeSUT()
+        var completedOperationInorder = [XCTestExpectation]()
+        
+        let op1 = expectation(description: "Operation 1")
+        sut.insert((uniqueImageFeed().local), timestamp: Date()) { _ in
+            completedOperationInorder.append(op1)
+            op1.fulfill()
+        }
+        
+        let op2 = expectation(description: "Operation 2")
+        sut.deleteCachedFeed { _ in
+            completedOperationInorder.append(op2)
+            op2.fulfill()
+        }
+        
+        let op3 = expectation(description: "Operation 3")
+        sut.insert((uniqueImageFeed().local), timestamp: Date()) { _ in
+            completedOperationInorder.append(op3)
+            op1.fulfill()
+        }
+        waitForExpectations(timeout: 5.0)
+        
+        XCTAssertEqual(completedOperationInorder, [op1, op2, op3], "Expected side-ffects to run serially but operation finished in the wrong order")
+    }
+    
 
     
     // MARK: - Helpers
@@ -154,15 +185,6 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         return deletionError
     }
-    
-    private func excpect(
-        _ sut: FeedStore,
-        toRetrieveTwice expectedResult: RetrieveCachedFeedResult,
-        file: StaticString = #filePath,
-        line: UInt = #line) {
-            excpect(sut, toRetrieve: expectedResult, file: file, line: line)
-        }
-    
     @discardableResult
     private func insert(_ cache: (feed: [LocalFeedImage],
                                   timestamp: Date),
@@ -176,6 +198,16 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         return insertionError
     }
+    
+    private func excpect(
+        _ sut: FeedStore,
+        toRetrieveTwice expectedResult: RetrieveCachedFeedResult,
+        file: StaticString = #filePath,
+        line: UInt = #line) {
+            excpect(sut, toRetrieve: expectedResult, file: file, line: line)
+            excpect(sut, toRetrieve: expectedResult, file: file, line: line)
+        }
+    
     
     private func excpect(
         _ sut: FeedStore,
