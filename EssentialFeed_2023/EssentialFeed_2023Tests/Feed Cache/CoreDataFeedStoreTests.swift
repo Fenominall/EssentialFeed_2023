@@ -7,13 +7,18 @@
 
 import XCTest
 import EssentialFeed_2023
+import CoreData
+ 
 
 public final class CoreDataFeedStore: FeedStore {
         
+    private static let modelName: String = "FeedStore"
     private let container: NSPersistentContainer
+    private let context: NSManagedObjectContext
     
     public init(bundle: Bundle = .main) throws {
         container = try NSPersistentContainer.load(modelName: "FeedStore", in: bundle)
+        context = container.newBackgroundContext()
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
@@ -28,7 +33,6 @@ public final class CoreDataFeedStore: FeedStore {
         
     }
 }
-
 
 final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     
