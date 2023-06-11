@@ -10,6 +10,23 @@ import Foundation
 import CoreData
 
 @objc(ManagedFeedImage)
-public class ManagedFeedImage: NSManagedObject {
+class ManagedFeedImage: NSManagedObject {
+    @NSManaged var id: UUID?
+    @NSManaged var imageDescription: String?
+    @NSManaged var location: String?
+    @NSManaged var url: URL?
+    @NSManaged var cache: ManagedCache?
+}
+
+extension ManagedFeedImage {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedFeedImage> {
+        return NSFetchRequest<ManagedFeedImage>(entityName: "ManagedFeedImage")
+    }
+
 
 }
+
+extension ManagedFeedImage : Identifiable {
+
+}
+

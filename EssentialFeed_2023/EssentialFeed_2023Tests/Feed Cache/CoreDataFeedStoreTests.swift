@@ -9,8 +9,12 @@ import XCTest
 import EssentialFeed_2023
 
 public final class CoreDataFeedStore: FeedStore {
+        
+    private let container: NSPersistentContainer
     
-    public init() {}
+    public init(bundle: Bundle = .main) throws {
+        container = try NSPersistentContainer.load(modelName: "FeedStore", in: bundle)
+    }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
         completion(.empty)
@@ -24,6 +28,7 @@ public final class CoreDataFeedStore: FeedStore {
         
     }
 }
+
 
 final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     
@@ -80,8 +85,9 @@ final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
-        let sut = CoreDataFeedStore()
-        trackForMemoryLeak(sut)
+        let storeBundle = Bundle(for: CoreDataFeedStore.self)
+        let sut = try! CoreDataFeedStore(bundle: storeBundle)
+        trackForMemoryLeak(sut, file: file, line: line)
         return sut
     }
 }

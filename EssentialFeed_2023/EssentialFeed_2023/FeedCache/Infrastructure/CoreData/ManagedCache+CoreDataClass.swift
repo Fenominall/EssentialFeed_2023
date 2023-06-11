@@ -10,6 +10,21 @@ import Foundation
 import CoreData
 
 @objc(ManagedCache)
-public class ManagedCache: NSManagedObject {
+class ManagedCache: NSManagedObject {
+    @NSManaged var timestamp: Date?
+    @NSManaged var feed: NSOrderedSet?
+}
+
+
+
+extension ManagedCache {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<ManagedCache> {
+        return NSFetchRequest<ManagedCache>(entityName: "ManagedCache")
+    }
 
 }
+
+extension ManagedCache : Identifiable {
+
+}
+
