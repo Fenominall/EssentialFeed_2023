@@ -7,31 +7,6 @@
 
 import XCTest
 import EssentialFeed_2023
-import CoreData
- 
-
-public final class CoreDataFeedStore: FeedStore {
-        
-    private let container: NSPersistentContainer
-    private let context: NSManagedObjectContext
-    
-    public init(storeURL: URL, bundle: Bundle = .main) throws {
-        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
-        context = container.newBackgroundContext()
-    }
-    
-    public func retrieve(completion: @escaping RetrievalCompletion) {
-        completion(.empty)
-    }
-    
-    public func insert(_ feed: [EssentialFeed_2023.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        
-    }
-    
-    public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        
-    }
-}
 
 final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     
@@ -48,7 +23,9 @@ final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     }
     
     func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
+        let sut = makeSUT()
         
+        assertThatRetrieveDeliversFoundValuesOnNonEmptyCache(on: sut)
     }
     
     func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
