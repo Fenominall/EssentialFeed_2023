@@ -12,12 +12,11 @@ import CoreData
 
 public final class CoreDataFeedStore: FeedStore {
         
-    private static let modelName: String = "FeedStore"
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
-    public init(bundle: Bundle = .main) throws {
-        container = try NSPersistentContainer.load(modelName: "FeedStore", in: bundle)
+    public init(storeURL: URL, bundle: Bundle = .main) throws {
+        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
         context = container.newBackgroundContext()
     }
     
@@ -90,7 +89,8 @@ final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
         let storeBundle = Bundle(for: CoreDataFeedStore.self)
-        let sut = try! CoreDataFeedStore(bundle: storeBundle)
+        let storeURL = URL(filePath: "/dev/null")
+        let sut = try! CoreDataFeedStore(storeURL: storeURL, bundle: storeBundle)
         trackForMemoryLeak(sut, file: file, line: line)
         return sut
     }
