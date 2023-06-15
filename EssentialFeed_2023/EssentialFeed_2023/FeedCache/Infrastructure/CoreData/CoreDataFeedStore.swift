@@ -40,7 +40,7 @@ public final class CoreDataFeedStore: FeedStore {
         }
     }
     
-    public func insert(_ feed: [EssentialFeed_2023.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
+    public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
         let context = self.context
         
         context.perform {
