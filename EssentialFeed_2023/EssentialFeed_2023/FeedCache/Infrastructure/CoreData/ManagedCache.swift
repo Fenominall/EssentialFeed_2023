@@ -23,6 +23,12 @@ class ManagedCache: NSManagedObject {
         request.returnsObjectsAsFaults = false
         return try context.fetch(request).first
     }
+    
+    // Used to override previously inserted cache
+    static func newUniqueInstance(in context: NSManagedObjectContext) throws -> ManagedCache {
+        try find(in: context).map(context.delete)
+        return ManagedCache(context: context)
+    }
 }
 
 extension ManagedCache: Identifiable {}

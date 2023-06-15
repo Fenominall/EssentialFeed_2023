@@ -12,12 +12,13 @@ import CoreData
 public final class CoreDataFeedStore: FeedStore {
     
     //MARK: - Properties
+    private let model = "FeedStore"
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
     //MARK: - Initialization
     public init(storeURL: URL, bundle: Bundle = .main) throws {
-        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
+        container = try NSPersistentContainer.load(modelName: model, url: storeURL, in: bundle)
         context = container.newBackgroundContext()
     }
     
@@ -45,7 +46,7 @@ public final class CoreDataFeedStore: FeedStore {
         
         context.perform {
             do {
-                let managedCache = ManagedCache(context: context)
+                let managedCache = try ManagedCache.newUniqueInstance(in: context)
                 managedCache.timestamp = timestamp
                 managedCache.feed =
                 ManagedFeedImage.images(from: feed,
@@ -59,6 +60,6 @@ public final class CoreDataFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        
+        completion(nil)
     }
 }
