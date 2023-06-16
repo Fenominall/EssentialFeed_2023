@@ -12,34 +12,24 @@ import CoreData
 public final class CoreDataFeedStore: FeedStore {
     
     //MARK: - Properties
+    private let model = "FeedStore"
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
     //MARK: - Initialization
     public init(storeURL: URL, bundle: Bundle = .main) throws {
-        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
+        container = try NSPersistentContainer.load(modelName: model, url: storeURL, in: bundle)
         context = container.newBackgroundContext()
     }
     
     // MARK: - Methods
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        let context  = self.context
         
-        context.perform {
+        perform { context in
             do {
-                let request = NSFetchRequest<ManagedCache>(entityName: ManagedCache.entity().name!)
-                request.returnsObjectsAsFaults = false
-                if let cache = try context.fetch(request).first {
+                if let cache = try ManagedCache.find(in: context) {
                     completion(.found(
-                        feed: cache.feed
-                            .compactMap { $0 as? ManagedFeedImage }
-                            .map{
-                                LocalFeedImage(
-                                    id: $0.id,
-                                    description: $0.imageDescription,
-                                    location: $0.location,
-                                    url: $0.url)
-                            },
+                        feed: cache.localFeed,
                         timestamp: cache.timestamp))
                 } else {
                     completion(.empty)
@@ -50,21 +40,14 @@ public final class CoreDataFeedStore: FeedStore {
         }
     }
     
-    public func insert(_ feed: [EssentialFeed_2023.LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        let context = self.context
+    public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
         
-        context.perform {
+        perform { context in
             do {
-                let managedCache = ManagedCache(context: context)
+                let managedCache = try ManagedCache.newUniqueInstance(in: context)
                 managedCache.timestamp = timestamp
-                managedCache.feed = NSOrderedSet(array: feed.map { local in
-                    let managedFeedImage = ManagedFeedImage(context: context)
-                    managedFeedImage.id = local.id
-                    managedFeedImage.imageDescription = local.description
-                    managedFeedImage.location = local.location
-                    managedFeedImage.url = local.imageURL
-                    return managedFeedImage
-                })
+                managedCache.feed = ManagedFeedImage.images(from: feed, in: context)
+                
                 try context.save()
                 completion(nil)
             } catch {
@@ -75,5 +58,21 @@ public final class CoreDataFeedStore: FeedStore {
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         
+        perform { context in
+            do {
+                try ManagedCache
+                    .find(in: context)
+                    .map(context.delete)
+                    .map(context.save)
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
+    }
+    
+    private func perform(_ action: @escaping (NSManagedObjectContext) -> Void) {
+        let context = self.context
+        context.perform { action(context) }
     }
 }
