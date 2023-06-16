@@ -30,6 +30,7 @@
 		4F68908729AA0A3400F5A94D /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F68908629AA0A3400F5A94D /* RemoteFeedLoader.swift */; };
 		4F6CFC102A3C7EDF007B35BF /* EssentialFeed_2023CacheIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6CFC0F2A3C7EDF007B35BF /* EssentialFeed_2023CacheIntegrationTests.swift */; };
 		4F6CFC112A3C7EE0007B35BF /* EssentialFeed_2023.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA8707929A50088000554BF /* EssentialFeed_2023.framework */; };
+		4F6CFC192A3C945E007B35BF /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7AEE2229E1D8EB00D2E54D /* Helpers.swift */; };
 		4F6D98672A360055005AB949 /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D98662A360055005AB949 /* CoreDataHelpers.swift */; };
 		4F7AEE2329E1D8EB00D2E54D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7AEE2229E1D8EB00D2E54D /* Helpers.swift */; };
 		4F875A862A094BF4007044FB /* FeedCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F875A852A094BF4007044FB /* FeedCacheTestHelpers.swift */; };
@@ -232,7 +233,7 @@
 			path = EssentialFeed_2023CacheIntegrationTests;
 			sourceTree = "<group>";
 		};
-		4F6CFC182A3C803F007B35BF /* TestsTargets */ = {
+		4F6CFC182A3C803F007B35BF /* TestsTargetsSchemes */ = {
 			isa = PBXGroup;
 			children = (
 				4F6CFC172A3C7F21007B35BF /* EssentialFeed_2023CacheIntegrationTests.xctestplan */,
@@ -240,7 +241,7 @@
 				4F4217EC29EEF2EE00A24369 /* EssentialFeed_2023Tests.xctestplan */,
 				4F4217EB29EEE67400A24369 /* CI_macOS.xctestplan */,
 			);
-			path = TestsTargets;
+			path = TestsTargetsSchemes;
 			sourceTree = "<group>";
 		};
 		4F7AEE2129E1D8D500D2E54D /* Helpers */ = {
@@ -263,7 +264,7 @@
 		4FA8706F29A50088000554BF = {
 			isa = PBXGroup;
 			children = (
-				4F6CFC182A3C803F007B35BF /* TestsTargets */,
+				4F6CFC182A3C803F007B35BF /* TestsTargetsSchemes */,
 				4FA8707B29A50088000554BF /* EssentialFeed_2023 */,
 				4FA8708529A50089000554BF /* EssentialFeed_2023Tests */,
 				4F5DEBB329E33C6E00966E98 /* EssentialFeed_2023APIEndToEndTests */,
@@ -529,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F6CFC102A3C7EDF007B35BF /* EssentialFeed_2023CacheIntegrationTests.swift in Sources */,
+				4F6CFC192A3C945E007B35BF /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
