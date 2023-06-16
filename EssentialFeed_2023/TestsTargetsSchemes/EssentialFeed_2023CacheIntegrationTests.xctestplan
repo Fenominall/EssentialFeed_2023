@@ -17,7 +17,8 @@
           "name" : "EssentialFeed_2023"
         }
       ]
-    }
+    },
+    "testExecutionOrdering" : "random"
   },
   "testTargets" : [
     {
