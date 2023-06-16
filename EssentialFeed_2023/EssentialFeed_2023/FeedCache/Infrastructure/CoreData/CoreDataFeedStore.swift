@@ -48,9 +48,8 @@ public final class CoreDataFeedStore: FeedStore {
             do {
                 let managedCache = try ManagedCache.newUniqueInstance(in: context)
                 managedCache.timestamp = timestamp
-                managedCache.feed =
-                ManagedFeedImage.images(from: feed,
-                                        in: context)
+                managedCache.feed = ManagedFeedImage.images(from: feed, in: context)
+                
                 try context.save()
                 completion(nil)
             } catch {
@@ -60,6 +59,6 @@ public final class CoreDataFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        completion(nil)
+
     }
 }
