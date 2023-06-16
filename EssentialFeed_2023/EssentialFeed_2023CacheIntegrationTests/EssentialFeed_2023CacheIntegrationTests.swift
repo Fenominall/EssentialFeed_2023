@@ -9,6 +9,16 @@ import XCTest
 import EssentialFeed_2023
 
 final class EssentialFeed_2023CacheIntegrationTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        // code is better then commen because the commen can get out of date if you forget update code it`s not possible to compile
+        setupEmptyStoreState()
+    }
+    
+    override func tearDown() {
+        undoStoreSideEffects()
+        super.tearDown()
+    }
     
     func test_load_deliversNoItemsOnEmptyCache() {
         let sut = makeSUT()
@@ -44,5 +54,17 @@ final class EssentialFeed_2023CacheIntegrationTests: XCTestCase {
     
     private func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    }
+    
+    private func setupEmptyStoreState() {
+        deleteStoreArtifacts()
+    }
+    
+    private func undoStoreSideEffects() {
+        deleteStoreArtifacts()
+    }
+    
+    private func deleteStoreArtifacts() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
 }
