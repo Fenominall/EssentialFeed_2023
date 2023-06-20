@@ -139,11 +139,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             "description": description,
             "location": location,
             "image": imageURL.absoluteString
-        ].reduce(into: [String: Any]()) { (acc, element) in
-            // If we have a value the element it`s added to the dictionary - acc
-            if let value = element.value { acc[element.key] = value }
-        }
-        
+        ].compactMapValues { $0 }
         return (item, json )
     }
     
