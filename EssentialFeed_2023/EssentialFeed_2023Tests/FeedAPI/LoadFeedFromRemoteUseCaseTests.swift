@@ -116,8 +116,8 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(url: url, client: client)
-        trackForMemoryLeak(client, file: file, line: line)
-        trackForMemoryLeak(sut, file: file, line: line)
+        trackForMemoryLeaks(client, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, client)
     }
     
@@ -139,11 +139,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             "description": description,
             "location": location,
             "image": imageURL.absoluteString
-        ].reduce(into: [String: Any]()) { (acc, element) in
-            // If we have a value the element it`s added to the dictionary - acc
-            if let value = element.value { acc[element.key] = value }
-        }
-        
+        ].compactMapValues { $0 }
         return (item, json )
     }
     
