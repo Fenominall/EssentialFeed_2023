@@ -46,7 +46,7 @@ extension LocalFeedLoader {
 }
 
 extension LocalFeedLoader: FeedLoader {
-    public typealias LoadResult = LoadFeedResult
+    public typealias LoadResult = FeedLoader.Result
 
     //  Query should only return a result and should not have side-effects (does not change the observable state of the system).
     public func load(completion: @escaping (LoadResult) -> Void) {
