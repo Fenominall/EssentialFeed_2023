@@ -86,8 +86,10 @@ final class EssentialFeed_2023CacheIntegrationTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line) {
             let saveExp = expectation(description: "Wait for save completion")
-            loader.save(feed) { saveError in
-                XCTAssertNil(saveError, "Expected to save fedd successfully")
+            loader.save(feed) { result in
+                if case let Result.failure(error) = result {
+                    XCTAssertNil(error, "Expected to save fedd successfully")
+                }
                 saveExp.fulfill()
             }
             wait(for: [saveExp], timeout: 1.0)
