@@ -13,8 +13,8 @@
       "targets" : [
         {
           "containerPath" : "container:EssentialFeed_2023.xcodeproj",
-          "identifier" : "4FA8708029A50089000554BF",
-          "name" : "EssentialFeed_2023Tests"
+          "identifier" : "4FA8707829A50088000554BF",
+          "name" : "EssentialFeed_2023"
         }
       ]
     },

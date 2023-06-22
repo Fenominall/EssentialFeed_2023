@@ -12,7 +12,7 @@ import EssentialFeed_2023
 /// Four ways to test the Network:
 /// 1.End-to-end test - flaky and requires a backend
 /// 2. Subclass-URLSession- URLSessionDataTask - problematic and frigle way to override methods
-/// 3. Protocl-based mocking - "With protocols with only care about a specific behaviour"
+/// 3. Protocl-based mocking - "With protocols we only care about a specific behaviour"
 /// 4. URLProtocol stubbing - Subclassing URLProtocol: NSObjcet
 
 final class URLSessionHTTPClientTest: XCTestCase {
