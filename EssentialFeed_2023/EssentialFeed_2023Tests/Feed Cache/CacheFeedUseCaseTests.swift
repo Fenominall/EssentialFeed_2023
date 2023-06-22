@@ -76,7 +76,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
-        var receivedResults = [Error?]()
+        var receivedResults = [LocalFeedLoader.SaveResult]()
         sut?.save(uniqueImageFeed().models, completion: { receivedResults.append($0) })
         
         sut = nil
@@ -120,8 +120,10 @@ final class CacheFeedUseCaseTests: XCTestCase {
             let exp = expectation(description: "Wait for save cimpletion")
             
             var receivedError: Error?
-            sut.save(uniqueImageFeed().models) { error in
-                receivedError = error
+            sut.save(uniqueImageFeed().models) { result in
+                if case let Result.failure(error) = result {
+                    receivedError = error
+                }
                 exp.fulfill()
             }
             action()

@@ -101,7 +101,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         // given
         let client = HTTPClientSpy()
         var sut: RemoteFeedLoader?  = RemoteFeedLoader(url: makeURL(), client: client)
-        var capturedResults = [RemoteFeedLoader.Results]()
+        var capturedResults = [RemoteFeedLoader.Result]()
         sut?.load(completion: { capturedResults.append($0) })
         
         sut = nil
@@ -151,7 +151,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     
     private func expect(
         _ sut: RemoteFeedLoader,
-        toCompleteWith expectedResult: RemoteFeedLoader.Results,
+        toCompleteWith expectedResult: RemoteFeedLoader.Result,
         when action: () -> Void,
         file: StaticString = #filePath,
         line: UInt = #line) {
@@ -174,7 +174,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         }
     
     // By using factory methods in the test scope, also prevent our test methods from braking in the future if we ever decide to change the production types again!
-    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Results {
+    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
         return .failure(error)
     }
     private func makeURL(_ url: URL
@@ -187,12 +187,12 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         
         private var messages = [
             (url: URL,
-             completion: (HTTPClientResult) -> Void)]()
+             completion: (HTTPClient.Result) -> Void)]()
         var requesterURLs: [URL] {
             return messages.map { $0.url }
         }
         
-        func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
+        func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) {
             messages.append((url, completion))
         }
         
