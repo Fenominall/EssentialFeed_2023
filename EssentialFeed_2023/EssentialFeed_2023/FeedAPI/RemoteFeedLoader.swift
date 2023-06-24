@@ -24,6 +24,8 @@ public final class RemoteFeedLoader: FeedLoader {
     
     public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { [weak self] result in
+            // using gualed let self = self else { return } is tricky because if an isntance has been deallocated then the code bellow will not be executed.
+            // With the static method even if RemoteFeedLoader is deallocated, then FeedItemsMapper may still be invoked and calling a completion block
             // Guarantee we do not deliver a result (invoke the completion closure) after the 'RemoteFeedLoader' instance has been deallocated
             guard self != nil else { return }
             
