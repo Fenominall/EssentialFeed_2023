@@ -37,10 +37,10 @@
                                             <rect key="frame" x="20" y="17" width="353" height="546"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="yOd-dg-ybf" userLabel="Location Container">
-                                                    <rect key="frame" x="0.0" y="0.0" width="94" height="58.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="134" height="58.333333333333336"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqa-Fn-VNG" userLabel="Pin Container">
-                                                            <rect key="frame" x="0.0" y="0.0" width="10" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="SlR-Pk-jDb" userLabel="pin">
                                                                     <rect key="frame" x="0.0" y="3" width="40" height="426.66666666666669"/>
@@ -51,7 +51,7 @@
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qem-D8-1gw">
-                                                            <rect key="frame" x="31" y="0.0" width="63" height="36"/>
+                                                            <rect key="frame" x="71" y="0.0" width="63" height="36"/>
                                                             <string key="text">Location,
 Location</string>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -97,9 +97,7 @@ Location</string>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="6r4-Tc-g8s" firstAttribute="width" secondItem="MxP-Vd-h5n" secondAttribute="width" id="BUy-pV-6KG"/>
-                                                <constraint firstItem="yOd-dg-ybf" firstAttribute="width" secondItem="MxP-Vd-h5n" secondAttribute="width" multiplier="0.266289" id="CP5-TE-7rW"/>
-                                                <constraint firstItem="yOd-dg-ybf" firstAttribute="width" secondItem="MxP-Vd-h5n" secondAttribute="width" multiplier="0.266289" id="diW-l7-uq1"/>
-                                                <constraint firstItem="yOd-dg-ybf" firstAttribute="width" secondItem="MxP-Vd-h5n" secondAttribute="width" multiplier="0.266289" id="npn-gL-06h"/>
+                                                <constraint firstItem="Wqa-Fn-VNG" firstAttribute="width" secondItem="6r4-Tc-g8s" secondAttribute="width" multiplier="0.141643" id="gFz-4b-ndU"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -114,7 +112,6 @@ Location</string>
                                 <connections>
                                     <outlet property="descriptionLabel" destination="0li-Wo-M81" id="thV-WS-sFe"/>
                                     <outlet property="feedImageView" destination="BPG-BI-Ayv" id="tzI-p7-TZg"/>
-                                    <outlet property="locationContainer" destination="yOd-dg-ybf" id="Pzz-5o-OFp"/>
                                     <outlet property="locationLabel" destination="Qem-D8-1gw" id="9bM-uo-zx4"/>
                                 </connections>
                             </tableViewCell>
