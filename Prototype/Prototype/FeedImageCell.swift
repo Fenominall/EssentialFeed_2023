@@ -36,5 +36,4 @@ final class FeedImageCell: UITableViewCell {
             self.feedImageView.alpha = 1
         })
     }
-    
 }
