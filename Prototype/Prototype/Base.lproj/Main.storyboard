@@ -26,7 +26,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="580" id="7M9-Py-PYY">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="580" id="7M9-Py-PYY" customClass="FeedImageCell" customModule="Prototype" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="66" width="393" height="580"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7M9-Py-PYY" id="iw1-Bb-Wik">
@@ -111,6 +111,12 @@ Location</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="0li-Wo-M81" id="thV-WS-sFe"/>
+                                    <outlet property="feedImageView" destination="BPG-BI-Ayv" id="tzI-p7-TZg"/>
+                                    <outlet property="locationContainer" destination="yOd-dg-ybf" id="Pzz-5o-OFp"/>
+                                    <outlet property="locationLabel" destination="Qem-D8-1gw" id="9bM-uo-zx4"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
