@@ -12,6 +12,7 @@
 		4F5529992A4863DE00B043DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F5529972A4863DE00B043DE /* Main.storyboard */; };
 		4F55299B2A4863E000B043DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F55299A2A4863E000B043DE /* Assets.xcassets */; };
 		4F55299E2A4863E000B043DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F55299C2A4863E000B043DE /* LaunchScreen.storyboard */; };
+		4F5529A62A486E3600B043DE /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5529A52A486E3600B043DE /* FeedTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		4F55299A2A4863E000B043DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F55299D2A4863E000B043DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F55299F2A4863E000B043DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F5529A52A486E3600B043DE /* FeedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				4F55299A2A4863E000B043DE /* Assets.xcassets */,
 				4F55299C2A4863E000B043DE /* LaunchScreen.storyboard */,
 				4F55299F2A4863E000B043DE /* Info.plist */,
+				4F5529A52A486E3600B043DE /* FeedTableViewController.swift */,
 			);
 			path = Prototype;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F5529922A4863DE00B043DE /* AppDelegate.swift in Sources */,
+				4F5529A62A486E3600B043DE /* FeedTableViewController.swift in Sources */,
 				4F5529942A4863DE00B043DE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +293,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -316,6 +321,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
