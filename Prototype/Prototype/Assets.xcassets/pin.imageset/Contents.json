@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "pngwing.com@1x.png",
+      "filename" : "pin.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "pngwing.com@2x.png",
+      "filename" : "pin@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "pngwing.com@3x.png",
+      "filename" : "pin@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
