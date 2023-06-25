@@ -104,6 +104,7 @@
 		4F5529B22A4885FD00B043DE /* EssentialFeed_2023iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed_2023iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5529B92A4885FE00B043DE /* EssentialFeed_2023iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeed_2023iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5529C72A48867600B043DE /* EssentialFeed_2023iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = EssentialFeed_2023iOS.xctestplan; sourceTree = "<group>"; };
+		4F5529C82A48893700B043DE /* CI_iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CI_iOS.xctestplan; sourceTree = "<group>"; };
 		4F5DEBAC29E3165C00966E98 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
 		4F5DEBB229E33C6E00966E98 /* EssentialFeed_2023APIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeed_2023APIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5DEBB429E33C6E00966E98 /* EssentialFeed_2023APIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeed_2023APIEndToEndTests.swift; sourceTree = "<group>"; };
@@ -293,6 +294,7 @@
 		4FA8706F29A50088000554BF = {
 			isa = PBXGroup;
 			children = (
+				4F5529C82A48893700B043DE /* CI_iOS.xctestplan */,
 				4F5529C72A48867600B043DE /* EssentialFeed_2023iOS.xctestplan */,
 				4F6CFC182A3C803F007B35BF /* TestsTargetsSchemes */,
 				4FA8707B29A50088000554BF /* EssentialFeed_2023 */,
