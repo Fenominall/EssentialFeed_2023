@@ -15,11 +15,23 @@ final class FeedImageCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        feedImageView.alpha = 0
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        feedImageView.image = nil
     }
     
-    
+    func fadeIn(_ image: UIImage?) {
+        feedImageView.image = image
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0.3) {
+            self.feedImageView.alpha = 1
+        }
+    }
 }
