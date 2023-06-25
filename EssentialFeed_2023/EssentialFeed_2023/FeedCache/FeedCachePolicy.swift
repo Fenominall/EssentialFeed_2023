@@ -25,3 +25,5 @@ final class FeedCachePolicy {
         return date < maxCacheAge
     }
 }
+
+public final class TestCIScheme {}
