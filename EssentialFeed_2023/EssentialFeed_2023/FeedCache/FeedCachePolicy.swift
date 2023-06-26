@@ -26,4 +26,3 @@ final class FeedCachePolicy {
     }
 }
 
-public final class TestCIScheme {}
