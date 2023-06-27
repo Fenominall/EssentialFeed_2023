@@ -173,6 +173,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             wait(for: [exp], timeout: 1.0)
         }
     
+    
     // By using factory methods in the test scope, also prevent our test methods from braking in the future if we ever decide to change the production types again!
     private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
         return .failure(error)

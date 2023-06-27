@@ -132,6 +132,7 @@ extension FeedStoreSpecs where Self: XCTestCase {
         return deletionError
     }
     
+    
     @discardableResult
     func insert(_ cache: (feed: [LocalFeedImage],
                           timestamp: Date),

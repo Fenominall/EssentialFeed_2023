@@ -17,3 +17,4 @@ extension FailableRetrieveFeedStoreSpecs where Self: XCTestCase {
         expect(sut, toRetrieveTwice: .failure(anyNSError()), file: file, line: line)
     }
 }
+

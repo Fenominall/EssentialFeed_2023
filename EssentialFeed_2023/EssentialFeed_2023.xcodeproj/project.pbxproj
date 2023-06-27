@@ -11,6 +11,8 @@
 		4F06E2E42A0272A1004DD0ED /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F06E2E32A0272A1004DD0ED /* FeedStore.swift */; };
 		4F0DD0B82A0A9CB800A523E4 /* ValidateFeedCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0DD0B72A0A9CB800A523E4 /* ValidateFeedCacheUseCaseTests.swift */; };
 		4F0DD0BA2A0AA2E900A523E4 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0DD0B92A0AA2E900A523E4 /* SharedTestHelpers.swift */; };
+		4F21FB1F2A4AB62C00162CD5 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F21FB1E2A4AB62B00162CD5 /* Test.swift */; };
+		4F21FB212A4AB63400162CD5 /* Test1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F21FB202A4AB63400162CD5 /* Test1.swift */; };
 		4F27C65029E44EE6005B0E64 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7AEE2229E1D8EB00D2E54D /* Helpers.swift */; };
 		4F2B69472A250E6B0044AA5F /* FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B69462A250E6B0044AA5F /* FeedStoreSpecs.swift */; };
 		4F2B69492A250F4E0044AA5F /* XCTestCase+FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B69482A250F4E0044AA5F /* XCTestCase+FeedStoreSpecs.swift */; };
@@ -89,6 +91,8 @@
 		4F06E2E32A0272A1004DD0ED /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		4F0DD0B72A0A9CB800A523E4 /* ValidateFeedCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateFeedCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		4F0DD0B92A0AA2E900A523E4 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
+		4F21FB1E2A4AB62B00162CD5 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		4F21FB202A4AB63400162CD5 /* Test1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test1.swift; sourceTree = "<group>"; };
 		4F2B69462A250E6B0044AA5F /* FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreSpecs.swift; sourceTree = "<group>"; };
 		4F2B69482A250F4E0044AA5F /* XCTestCase+FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		4F2B694A2A25171D0044AA5F /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableRetrieveFeedStoreSpecs.swift"; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 		4F5529B32A4885FD00B043DE /* EssentialFeed_2023iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4F21FB202A4AB63400162CD5 /* Test1.swift */,
 			);
 			path = EssentialFeed_2023iOS;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 		4F5529BD2A4885FF00B043DE /* EssentialFeed_2023iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				4F21FB1E2A4AB62B00162CD5 /* Test.swift */,
 			);
 			path = EssentialFeed_2023iOSTests;
 			sourceTree = "<group>";
@@ -527,9 +533,11 @@
 				TargetAttributes = {
 					4F5529B12A4885FD00B043DE = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
 					};
 					4F5529B82A4885FE00B043DE = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
 					};
 					4F5DEBB129E33C6E00966E98 = {
 						CreatedOnToolsVersion = 14.3;
@@ -620,6 +628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F21FB212A4AB63400162CD5 /* Test1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,6 +636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F21FB1F2A4AB62C00162CD5 /* Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,6 +737,7 @@
 		4F5529C22A4885FF00B043DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -752,6 +763,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -760,6 +772,7 @@
 		4F5529C32A4885FF00B043DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -794,6 +807,8 @@
 		4F5529C52A4885FF00B043DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YJ9NPM7MQ;
@@ -804,6 +819,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -812,6 +828,8 @@
 		4F5529C62A4885FF00B043DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5YJ9NPM7MQ;

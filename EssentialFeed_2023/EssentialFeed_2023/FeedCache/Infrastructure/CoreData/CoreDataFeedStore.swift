@@ -25,6 +25,7 @@ public final class CoreDataFeedStore: FeedStore {
     // MARK: - Methods
     public func retrieve(completion: @escaping RetrievalCompletion) {
         
+        
         perform { context in
             // with the Result there is no need to use doctach block as well as we do not need to invoke the completion because it wraps returned values in a success case
             // catching parameter name can be ommited

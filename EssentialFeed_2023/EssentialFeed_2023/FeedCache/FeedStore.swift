@@ -34,3 +34,4 @@ public protocol FeedStore {
     ///  Clients are responsible to dispatch to appropriate threads, if needed.
     func retrieve(completion: @escaping RetrievalCompletion)
 }
+

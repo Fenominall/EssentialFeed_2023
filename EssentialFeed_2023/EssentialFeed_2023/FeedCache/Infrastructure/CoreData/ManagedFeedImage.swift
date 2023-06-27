@@ -19,6 +19,7 @@ class ManagedFeedImage: NSManagedObject {
     
 }
 
+
 extension ManagedFeedImage {
     var local: LocalFeedImage {
         return LocalFeedImage(

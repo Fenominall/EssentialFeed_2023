@@ -19,3 +19,4 @@ func anyNSError() -> NSError {
 func anyData() -> Data {
     return Data("invalid json".utf8)
 }
+

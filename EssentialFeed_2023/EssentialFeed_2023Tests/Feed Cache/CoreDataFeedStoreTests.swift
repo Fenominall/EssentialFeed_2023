@@ -90,3 +90,4 @@ final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
         return sut
     }
 }
+

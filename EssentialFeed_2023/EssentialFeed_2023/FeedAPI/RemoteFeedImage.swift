@@ -21,3 +21,4 @@ struct RemoteFeedImage: Decodable {
         self.image = image
     }
 }
+
