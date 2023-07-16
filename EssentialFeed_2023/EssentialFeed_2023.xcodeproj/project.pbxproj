@@ -238,13 +238,6 @@
 			path = "Feed Cache";
 			sourceTree = "<group>";
 		};
-		4F5529B32A4885FD00B043DE /* EssentialFeed_2023iOS */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = EssentialFeed_2023iOS;
-			sourceTree = "<group>";
-		};
 		4F5529BD2A4885FF00B043DE /* EssentialFeed_2023iOSTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +273,13 @@
 				4F541FBE2A0673D0001EB9EC /* RemoteFeedImage.swift */,
 			);
 			path = FeedAPI;
+			sourceTree = "<group>";
+		};
+		4F69D13D2A63FF05006CABEB /* EssentialFeed_2023iOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EssentialFeed_2023iOS;
 			sourceTree = "<group>";
 		};
 		4F6CFC0E2A3C7EDF007B35BF /* EssentialFeed_2023CacheIntegrationTests */ = {
@@ -327,7 +327,7 @@
 				4FA8708529A50089000554BF /* EssentialFeed_2023Tests */,
 				4F5DEBB329E33C6E00966E98 /* EssentialFeed_2023APIEndToEndTests */,
 				4F6CFC0E2A3C7EDF007B35BF /* EssentialFeed_2023CacheIntegrationTests */,
-				4F5529B32A4885FD00B043DE /* EssentialFeed_2023iOS */,
+				4F69D13D2A63FF05006CABEB /* EssentialFeed_2023iOS */,
 				4F5529BD2A4885FF00B043DE /* EssentialFeed_2023iOSTests */,
 				4F7E666D2A4C73DD00E3EDC4 /* EssentialFeed_2023.framework */,
 				4F7E666E2A4C73DD00E3EDC4 /* EssentialFeed_2023Tests.xctest */,
