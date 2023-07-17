@@ -12,7 +12,7 @@ public final class FeedViewController: UITableViewController {
     
     private var loader: FeedLoader?
     
-    convenience init(loader: FeedLoader) {
+    public convenience init(loader: FeedLoader) {
         self.init()
         self.loader = loader
     }
