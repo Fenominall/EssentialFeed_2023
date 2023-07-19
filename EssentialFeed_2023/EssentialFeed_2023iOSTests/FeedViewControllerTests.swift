@@ -11,7 +11,6 @@ import EssentialFeed_2023
 import EssentialFeed_2023iOS
 
 final class FeedViewControllerTests: XCTestCase {
-    
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
         XCTAssertEqual(loader.loadCallCount, 0, "Expected no loading requests before view is loaded")
