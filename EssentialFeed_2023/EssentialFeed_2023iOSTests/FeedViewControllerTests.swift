@@ -10,7 +10,19 @@ import XCTest
 import EssentialFeed_2023
 import EssentialFeed_2023iOS
 
+//[✅] Load feed automatically when view is presented
+//[✅] Allow customer to manually reload feed (pull to refresh)
+//[✅] Show a loading indicator while loading feed
+//[✅] Render all loaded feed items (location, image, description)
+//[✅] Image loading experience
+//    [✅] Load when image view is visible (on screen)
+//    [✅] Cancel when image view is out of screen
+//    [✅] Show a loading indicator while loading image (shimmer)
+//    [✅] Option to retry on image download error
+//    [✅] Preload when image view is near visible
+
 final class FeedViewControllerTests: XCTestCase {
+    
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0, "Expected no loading requests before view is loaded")
@@ -72,7 +84,7 @@ final class FeedViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: [image0])
     }
     
-    func test_feedImageView_loadsIagesURLWhenVisible() {
+    func test_feedImageView_loadsImageURLWhenVisible() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -83,10 +95,10 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadedImageURLs, [], "Expected no image URL requests until views become visible")
         
         sut.simulateFeedImageViewVisible(at: 0)
-        XCTAssertEqual(loader.loadedImageURLs, [image0.url], "Expected first image URL request once first views becomes visible")
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url], "Expected first image URL request once first view becomes visible")
         
         sut.simulateFeedImageViewVisible(at: 1)
-        XCTAssertEqual(loader.loadedImageURLs, [image0.url ,image1.url], "Expected second image URL request once second view becomes visible")
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url], "Expected second image URL request once second view also becomes visible")
     }
     
     func test_feedImageView_cancelsImageLoadingWhenNotVisibleAnymore() {
@@ -102,7 +114,7 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url], "Expected one cancelled image URL request once first image is not visible anymore")
         
         sut.simulateFeedImageViewNotVisible(at: 1)
-        XCTAssertEqual(loader.cancelledImageURLs, [image0.url ,image1.url], "Expected two cancelled image URL request once second image is not visible anymore")
+        XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected two cancelled image URL requests once second image is also not visible anymore")
     }
     
     func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
@@ -123,10 +135,6 @@ final class FeedViewControllerTests: XCTestCase {
         loader.completeImageLoadingWithError(at: 1)
         XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator state change for first view once second image loading completes with error")
         XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expected no loading indicator for second view once second image loading completes with error")
-        
-        view1?.simulateRetryAction()
-        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator state change for first view once second image loading completes with error")
-        XCTAssertEqual(view1?.isShowingImageLoadingIndicator, true, "Expected loading indicator state change for second view on retry action")
     }
     
     func test_feedImageView_rendersImageLoadedFromURL() {
@@ -242,8 +250,8 @@ final class FeedViewControllerTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) ->
-    (sut: FeedViewController, loader: LoaderSpy) {
+    
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
         let sut = FeedViewController(feedLoader: loader, imageLoader: loader)
         trackForMemoryLeaks(loader, file: file, line: line)
@@ -252,56 +260,59 @@ final class FeedViewControllerTests: XCTestCase {
     }
     
     private func assertThat(_ sut: FeedViewController, isRendering feed: [FeedImage], file: StaticString = #file, line: UInt = #line) {
-        guard sut.numberOfRenderedFeedimageViews() == feed.count else {
-            return XCTFail("Expected \(feed.count) images, got \(sut.numberOfRenderedFeedimageViews()) instead.", file: file, line: line)
+        guard sut.numberOfRenderedFeedImageViews() == feed.count else {
+            return XCTFail("Expected \(feed.count) images, got \(sut.numberOfRenderedFeedImageViews()) instead.", file: file, line: line)
         }
         
         feed.enumerated().forEach { index, image in
-            assertThat(sut, hasViewConfiguredFor: image, at: index)
+            assertThat(sut, hasViewConfiguredFor: image, at: index, file: file, line: line)
         }
     }
     
-    private func assertThat(
-        _ sut: FeedViewController,
-        hasViewConfiguredFor image: FeedImage,
-        at index: Int,
-        file: StaticString = #file,
-        line: UInt = #line) {
-            let view = sut.feedImageView(at: index)
-            
-            guard let cell = view as? FeedImageCell else {
-                return XCTFail("Expected \(FeedImageCell.self) instance, got \(String(describing: view)) instead", file: file, line: line)
-            }
-            let shouldLocationBeVisible = (image.location != nil)
-            XCTAssertEqual(cell.isShowingLocation, shouldLocationBeVisible, "Expected 'isShowingLocation' to be \(shouldLocationBeVisible) for image view at index (\(index))", file: file, line: line)
-            XCTAssertEqual(cell.locationText, image.location, "Expected location text to be \(String(describing: image.location)) for image view at index (\(index))", file: file, line: line)
-            XCTAssertEqual(cell.descriptionText, image.description, "Expected description text to be \(String(describing: image.description)) for image view at index (\(index))", file: file, line: line)
+    private func assertThat(_ sut: FeedViewController, hasViewConfiguredFor image: FeedImage, at index: Int, file: StaticString = #file, line: UInt = #line) {
+        let view = sut.feedImageView(at: index)
+        
+        guard let cell = view as? FeedImageCell else {
+            return XCTFail("Expected \(FeedImageCell.self) instance, got \(String(describing: view)) instead", file: file, line: line)
         }
-    
+        
+        let shouldLocationBeVisible = (image.location != nil)
+        XCTAssertEqual(cell.isShowingLocation, shouldLocationBeVisible, "Expected `isShowingLocation` to be \(shouldLocationBeVisible) for image view at index (\(index))", file: file, line: line)
+        
+        XCTAssertEqual(cell.locationText, image.location, "Expected location text to be \(String(describing: image.location)) for image  view at index (\(index))", file: file, line: line)
+        
+        XCTAssertEqual(cell.descriptionText, image.description, "Expected description text to be \(String(describing: image.description)) for image view at index (\(index)", file: file, line: line)
+    }
     
     private func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "http://any-url.com")!) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }
     
     class LoaderSpy: FeedLoader, FeedImageDataLoader {
+        
         // MARK: - FeedLoader
+        
         private var feedRequests = [(FeedLoader.Result) -> Void]()
         
         var loadFeedCallCount: Int {
             return feedRequests.count
         }
+        
         func load(completion: @escaping (FeedLoader.Result) -> Void) {
             feedRequests.append(completion)
         }
+        
         func completeFeedLoading(with feed: [FeedImage] = [], at index: Int = 0) {
             feedRequests[index](.success(feed))
         }
+        
         func completeFeedLoadingWithError(at index: Int = 0) {
             let error = NSError(domain: "an error", code: 0)
             feedRequests[index](.failure(error))
         }
         
         // MARK: - FeedImageDataLoader
+        
         private struct TaskSpy: FeedImageDataLoaderTask {
             let cancelCallback: () -> Void
             func cancel() {
@@ -310,15 +321,16 @@ final class FeedViewControllerTests: XCTestCase {
         }
         
         private var imageRequests = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
+        
         var loadedImageURLs: [URL] {
             return imageRequests.map { $0.url }
         }
+        
         private(set) var cancelledImageURLs = [URL]()
         
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
             imageRequests.append((url, completion))
-            return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url)
-            }
+            return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url) }
         }
         
         func completeImageLoading(with imageData: Data = Data(), at index: Int = 0) {
@@ -330,6 +342,7 @@ final class FeedViewControllerTests: XCTestCase {
             imageRequests[index].completion(.failure(error))
         }
     }
+    
 }
 
 private extension FeedViewController {
@@ -346,21 +359,21 @@ private extension FeedViewController {
         let view = simulateFeedImageViewVisible(at: row)
         
         let delegate = tableView.delegate
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
     }
     
     func simulateFeedImageViewNearVisible(at row: Int) {
         let ds = tableView.prefetchDataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         ds?.tableView(tableView, prefetchRowsAt: [index])
     }
     
     func simulateFeedImageViewNotNearVisible(at row: Int) {
-        simulateFeedImageViewVisible(at: row)
+        simulateFeedImageViewNearVisible(at: row)
         
         let ds = tableView.prefetchDataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
     
@@ -368,18 +381,18 @@ private extension FeedViewController {
         return refreshControl?.isRefreshing == true
     }
     
-    func numberOfRenderedFeedimageViews() -> Int {
-        return tableView.numberOfRows(inSection: feedImageSection)
+    func numberOfRenderedFeedImageViews() -> Int {
+        return tableView.numberOfRows(inSection: feedImagesSection)
     }
     
     func feedImageView(at row: Int) -> UITableViewCell? {
         let ds = tableView.dataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         return ds?.tableView(tableView, cellForRowAt: index)
     }
     
-    private var feedImageSection: Int {
-        0
+    private var feedImagesSection: Int {
+        return 0
     }
 }
 
@@ -387,6 +400,7 @@ private extension FeedImageCell {
     func simulateRetryAction() {
         feedImageRetryButton.simulateTap()
     }
+    
     var isShowingLocation: Bool {
         return !locationContainer.isHidden
     }
@@ -415,9 +429,9 @@ private extension FeedImageCell {
 private extension UIButton {
     func simulateTap() {
         allTargets.forEach { target in
-            actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach({
+            actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
                 (target as NSObject).perform(Selector($0))
-            })
+            }
         }
     }
 }

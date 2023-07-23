@@ -15,14 +15,14 @@ public final class FeedImageCell: UITableViewCell {
     public let feedImageView = UIImageView()
     
     private(set) public lazy var feedImageRetryButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(retryButtontapped), for: .touchUpOutside)
+        let button = UIButton()
+        button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         return button
     }()
     
     var onRetry: (() -> Void)?
     
-    @objc private func retryButtontapped() {
+    @objc private func retryButtonTapped() {
         onRetry?()
     }
 }

@@ -15,12 +15,10 @@ public protocol FeedImageDataLoaderTask {
 public protocol FeedImageDataLoader {
     typealias Result = Swift.Result<Data, Error>
     
-    func loadImageData(from url: URL,
-                       completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask
+    func loadImageData(from url: URL, completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask
 }
 
-public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
-    
+final public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
     private var feedLoader: FeedLoader?
     private var imageLoader: FeedImageDataLoader?
     private var tableModel = [FeedImage]()
@@ -62,7 +60,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         cell.locationContainer.isHidden = (cellModel.location == nil)
         cell.locationLabel.text = cellModel.location
         cell.descriptionLabel.text = cellModel.description
-        // when start loading always setting image to nil
         cell.feedImageView.image = nil
         cell.feedImageRetryButton.isHidden = true
         cell.feedImageContainer.startShimmering()
@@ -78,6 +75,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
                 cell?.feedImageContainer.stopShimmering()
             }
         }
+        
         cell.onRetry = loadImage
         loadImage()
         
@@ -91,14 +89,14 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
             let cellModel = tableModel[indexPath.row]
-            _ = imageLoader?.loadImageData(from: cellModel.url) { _ in }
+            tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.url) { _ in }
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach(cancelTask)
-        
     }
+    
     private func cancelTask(forRowAt indexPath: IndexPath) {
         tasks[indexPath]?.cancel()
         tasks[indexPath] = nil
