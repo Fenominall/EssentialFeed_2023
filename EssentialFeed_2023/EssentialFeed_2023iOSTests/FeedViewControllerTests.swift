@@ -96,13 +96,13 @@ final class FeedViewControllerTests: XCTestCase {
         
         sut.loadViewIfNeeded()
         loader.completeFeedLoading(with: [image0, image1])
-        XCTAssertEqual(loader.canceledImageURLs, [], "Expected no cancelled image URL requests until image is not visible")
+        XCTAssertEqual(loader.cancelledImageURLs, [], "Expected no cancelled image URL requests until image is not visible")
         
         sut.simulateFeedImageViewNotVisible(at: 0)
-        XCTAssertEqual(loader.canceledImageURLs, [image0.url], "Expected one cancelled image URL request once first image is not visible anymore")
+        XCTAssertEqual(loader.cancelledImageURLs, [image0.url], "Expected one cancelled image URL request once first image is not visible anymore")
         
         sut.simulateFeedImageViewNotVisible(at: 1)
-        XCTAssertEqual(loader.canceledImageURLs, [image0.url ,image1.url], "Expected two cancelled image URL request once second image is not visible anymore")
+        XCTAssertEqual(loader.cancelledImageURLs, [image0.url ,image1.url], "Expected two cancelled image URL request once second image is not visible anymore")
     }
     
     // MARK: - Helpers
@@ -171,15 +171,20 @@ final class FeedViewControllerTests: XCTestCase {
         }
         
         // MARK: - FeedImageDataLoader
-        private(set) var loadedImageURLs = [URL]()
-        private(set) var canceledImageURLs = [URL]()
-
-        func loadImageData(from url: URL) {
-            loadedImageURLs.append(url)
+        private struct TaskSpy: FeedImageDataLoaderTask {
+            let cancelCallback: () -> Void
+            func cancel() {
+                cancelCallback()
+            }
         }
         
-        func cancelImageDataLoader(from url: URL) {
-            canceledImageURLs.append(url)
+        private(set) var loadedImageURLs = [URL]()
+        private(set) var cancelledImageURLs = [URL]()
+
+        func loadImageData(from url: URL) -> FeedImageDataLoaderTask {
+            loadedImageURLs.append(url)
+            return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url)
+            }
         }
     }
 }
