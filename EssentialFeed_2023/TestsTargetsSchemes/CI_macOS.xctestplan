@@ -1,0 +1,47 @@
+{
+  "configurations" : [
+    {
+      "id" : "94FA7BCF-46A4-44DB-A634-4F291AB38379",
+      "name" : "Test Scheme Action",
+      "options" : {
+        "testExecutionOrdering" : "random"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+          "identifier" : "4FA8707829A50088000554BF",
+          "name" : "EssentialFeed_2023"
+        }
+      ]
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+        "identifier" : "4FA8708029A50089000554BF",
+        "name" : "EssentialFeed_2023Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+        "identifier" : "4F5DEBB129E33C6E00966E98",
+        "name" : "EssentialFeed_2023APIEndToEndTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:EssentialFeed_2023.xcodeproj",
+        "identifier" : "4F6CFC0C2A3C7EDF007B35BF",
+        "name" : "EssentialFeed_2023CacheIntegrationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
