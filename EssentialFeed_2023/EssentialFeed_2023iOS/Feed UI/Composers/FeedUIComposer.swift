@@ -7,6 +7,9 @@
 
 import EssentialFeed_2023
 
+// Composer Rules
+// - Composers should only be used in the Composition Root
+// - Only Composers can use other Composers
 public final class FeedUIComposer {
     private init() {}
     
@@ -19,6 +22,7 @@ public final class FeedUIComposer {
     
     // When composing types the adapter pattern helps to connect unmatching APIs
     // In this case [FeedImage] -> Adapts -> [FeedImageCellController]
+    // The Adapter pattern enables components with incompatible interfaces to work together seamlessly.
     private static func adaptFeedToCellControllers(
         forwardingTo controller: FeedViewController,
         loader: FeedImageDataLoader) -> ([FeedImage]) -> Void {
