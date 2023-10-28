@@ -7,6 +7,7 @@
 
 import EssentialFeed_2023
 
+// In MVP, a ViewModel is also called ViewData or presentableModel, and it only holds the necessary data fro the View rendering. It has no behavior.
 struct FeedLoadingViewModel {
     let isLoading: Bool
 }
