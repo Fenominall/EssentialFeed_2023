@@ -18,8 +18,9 @@ public final class FeedUIComposer {
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
-        let feedPresenter = FeedPresenter(feedLoader: feedLoader)
-        let refreshController = FeedRefreshViewController(loadFeed: feedPresenter.loadFeed)
+        let feedPresenter = FeedPresenter()
+        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader, presenter: feedPresenter)
+        let refreshController = FeedRefreshViewController(loadFeed: presentationAdapter.loadFeed)
         let feedViewController = FeedViewController(refreshController: refreshController)
         feedPresenter.loadingView = WeakRefVirtualProxy(refreshController)
         feedPresenter.feedView = FeedViewAdapter(controller: feedViewController, loader: imageLoader)
@@ -62,6 +63,29 @@ private final class FeedViewAdapter: FeedView {
                         model: model,
                         imageLoader: loader,
                         imageTransformer: UIImage.init))
+        }
+    }
+}
+
+private final class FeedLoaderPresentationAdapter {
+    private let feedLoader: FeedLoader
+    private let presenter: FeedPresenter
+    
+    init(feedLoader: FeedLoader, presenter: FeedPresenter) {
+        self.feedLoader = feedLoader
+        self.presenter = presenter
+    }
+    
+    func loadFeed() {
+        presenter.didStartLoadingFeed()
+        
+        feedLoader.load { [weak self] result in
+            switch result {
+            case let .success(feed):
+                self?.presenter.didFinishLoadingFeed(with: feed)
+            case let .failure(error):
+                self?.presenter.didFinishLoadingFeed(with: error)
+            }
         }
     }
 }
