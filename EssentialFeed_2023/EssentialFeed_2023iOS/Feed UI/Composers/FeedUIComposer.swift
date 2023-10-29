@@ -30,7 +30,7 @@ public final class FeedUIComposer {
 
 // MARK: - WeakRefVirtualProxy
 // Memory management is a composition detail that should not be part of MVP components.
-// This class helps to eleminate memory management in FeedPresenter
+// This class helps to eleminate memory management in Presenters
 private final class WeakRefVirtualProxy<T: AnyObject> {
     private weak var object: T?
     
@@ -45,24 +45,31 @@ extension WeakRefVirtualProxy: FeedLoadingView where T: FeedLoadingView {
     }
 }
 
+extension WeakRefVirtualProxy: FeedImageView where T: FeedImageView, T.Image == UIImage {
+    func display(_ model: FeedImageViewModel<UIImage>) {
+        object?.display(model)
+    }
+    
+    
+}
+
 // MARK: - FeedViewAdapter
 private final class FeedViewAdapter: FeedView {
     private weak var controller: FeedViewController?
-    private let loader: FeedImageDataLoader
+    private let imageLoader: FeedImageDataLoader
     
     init(controller: FeedViewController, loader: FeedImageDataLoader) {
         self.controller = controller
-        self.loader = loader
+        self.imageLoader = loader
     }
     
     func display(_ viewModel: FeedViewModel) {
         controller?.tableModel = viewModel.feed.map { model in
-            FeedImageCellController(
-                viewModel:
-                    FeedImageViewModel(
-                        model: model,
-                        imageLoader: loader,
-                        imageTransformer: UIImage.init))
+            let adapter = FeedImageDataLoaderPresentationAdapter<WeakRefVirtualProxy<FeedImageCellController>, UIImage>(model: model, imageLoader: imageLoader)
+            let view = FeedImageCellController(delegate: adapter)
+            
+            adapter.presenter = FeedImagePresenter(view: WeakRefVirtualProxy(view), imageTransformer: UIImage.init)
+            return view
         }
     }
 }
@@ -86,5 +93,36 @@ private final class FeedLoaderPresentationAdapter: FeedRefreshViewControllerDele
                 self?.presenter?.didFinishLoadingFeed(with: error)
             }
         }
+    }
+}
+
+private final class FeedImageDataLoaderPresentationAdapter<View: FeedImageView, Image>: FeedImageCellControllerDelegate where View.Image == Image {
+    private let model: FeedImage
+    private let imageLoader: FeedImageDataLoader
+    private var task: FeedImageDataLoaderTask?
+    
+    var presenter: FeedImagePresenter<View, Image>?
+    
+    init(model: FeedImage, imageLoader: FeedImageDataLoader) {
+        self.model = model
+        self.imageLoader = imageLoader
+    }
+    
+    func didRequestImage() {
+        presenter?.didStartLoadingImageData(for: model)
+        
+        let model = self.model
+        task = imageLoader.loadImageData(from: model.url) { [weak self] result in
+            switch result {
+            case let .success(data):
+                self?.presenter?.didFinishLoadingImageData(with: data, for: model)
+            case let .failure(error):
+                self?.presenter?.didFinishLoadingImageData(with: error, for: model)
+            }
+        }
+    }
+    
+    func didCancelImageRequest() {
+        task?.cancel()
     }
 }
