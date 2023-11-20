@@ -5,6 +5,7 @@
 //  Created by Fenominall on 10/22/23.
 //
 
+import Foundation
 import EssentialFeed_2023
 
 // In MVP, a ViewModel is also called ViewData or presentableModel, and it only holds the necessary data fro the View rendering. It has no behavior.
@@ -34,7 +35,10 @@ final class FeedPresenter {
     }
     
     static var title: String {
-        return "My Feed"
+        return NSLocalizedString("FEED_VIEW_TITLE",
+                                 tableName: "Feed",
+                                 bundle: Bundle(for: FeedPresenter.self),
+                                 comment: "Title for the feed view")
     }
     
     func didStartLoadingFeed() {
@@ -48,5 +52,5 @@ final class FeedPresenter {
     
     func didFinishLoadingFeed(with error: Error) {
         loadingView.display(FeedLoadingViewModel(isLoading: false))
-    }    
+    }
 }
