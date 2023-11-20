@@ -22,7 +22,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = FeedPresenter.title
         refresh()
     }
     
@@ -68,5 +67,4 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     private func cancelCellControllerLoad(forRowAt indexPath: IndexPath) {
         cellControll(forRowAt: indexPath).cancelLoad()
     }
-
 }
