@@ -133,19 +133,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
-                            <action selector="refresh" destination="vXO-6y-qkH" eventType="valueChanged" id="Zpb-H0-oWM"/>
+                            <action selector="refresh" destination="69u-qL-wSM" eventType="valueChanged" id="qT1-2d-zMp"/>
                         </connections>
                     </refreshControl>
-                    <connections>
-                        <outlet property="refreshController" destination="vXO-6y-qkH" id="64u-14-p8Q"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLo-1d-jmX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <customObject id="vXO-6y-qkH" customClass="FeedRefreshViewController" customModule="EssentialFeed_2023iOS" customModuleProvider="target">
-                    <connections>
-                        <outlet property="view" destination="zck-Zy-Vtz" id="S65-8l-Vk8"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="770.2290076335878" y="14.788732394366198"/>
         </scene>
