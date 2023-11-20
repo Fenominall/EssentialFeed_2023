@@ -8,16 +8,10 @@
 import UIKit
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
-    private var refreshController: FeedRefreshViewController?
+    var refreshController: FeedRefreshViewController?
+    
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
-    }
-    
-    convenience init(refreshController: FeedRefreshViewController) {
-        self.init()
-        // When an instance creates it`s collaborators, it ends up requiring  extra dependencies just to create them!
-        // Instead, you should use Dependency injection to eleminate redundant dependecies.
-        self.refreshController = refreshController
     }
     
     public override func viewDidLoad() {
