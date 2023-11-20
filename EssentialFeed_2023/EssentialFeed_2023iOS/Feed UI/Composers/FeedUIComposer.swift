@@ -19,16 +19,23 @@ public final class FeedUIComposer {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
         let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
-        
+        let feedController = FeedViewController.makeWith(
+            delegate: presentationAdapter,
+            title: FeedPresenter.title)
+        presentationAdapter.presenter = FeedPresenter(
+            feedView: FeedViewAdapter(controller: feedController, loader: imageLoader),
+            loadingView: WeakRefVirtualProxy(feedController))
+        return feedController
+    }
+}
+
+private extension FeedViewController {
+    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
         let bundle = Bundle(for: FeedViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
         let feedViewController = storyboard.instantiateInitialViewController() as! FeedViewController
-        feedViewController.delegate = presentationAdapter
-        feedViewController.title = FeedPresenter.title
-
-        presentationAdapter.presenter = FeedPresenter(
-            feedView: FeedViewAdapter(controller: feedViewController, loader: imageLoader),
-            loadingView: WeakRefVirtualProxy(feedViewController))
+        feedViewController.delegate = delegate
+        feedViewController.title = title
         return feedViewController
     }
 }
