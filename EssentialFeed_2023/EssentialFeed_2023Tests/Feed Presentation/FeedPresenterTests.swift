@@ -19,7 +19,7 @@ class FeedPresenterTests: XCTestCase {
         
         XCTAssert(view.messages.isEmpty, "Expected no view messages.")
     }
-    
+        
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
@@ -33,6 +33,4 @@ class FeedPresenterTests: XCTestCase {
     private class ViewSpy {
         let messages = [Any]()
     }
-    
-    
 }
