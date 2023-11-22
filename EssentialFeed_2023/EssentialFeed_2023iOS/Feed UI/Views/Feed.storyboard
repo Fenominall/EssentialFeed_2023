@@ -38,7 +38,7 @@
                                 <constraint firstAttribute="bottom" secondItem="DmL-HC-95S" secondAttribute="bottom" constant="8" id="qaW-e1-v2k"/>
                             </constraints>
                             <connections>
-                                <outlet property="label" destination="DmL-HC-95S" id="W19-Ff-jp8"/>
+                                <outlet property="label" destination="DmL-HC-95S" id="ynL-zX-j0R"/>
                             </connections>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="pGT-Qn-vv2">
@@ -168,6 +168,9 @@
                             <action selector="refresh" destination="69u-qL-wSM" eventType="valueChanged" id="qT1-2d-zMp"/>
                         </connections>
                     </refreshControl>
+                    <connections>
+                        <outlet property="errorView" destination="tZ8-e5-A8H" id="HP0-4q-CuD"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLo-1d-jmX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
