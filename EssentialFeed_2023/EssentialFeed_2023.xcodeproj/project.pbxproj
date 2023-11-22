@@ -84,6 +84,7 @@
 		4FF4D1CC2B0D055D00453A24 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4D1CB2B0D055D00453A24 /* ErrorView.swift */; };
 		4FF5F6402AE05BCE00452ED7 /* FeedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5F63F2AE05BCE00452ED7 /* FeedImageViewModel.swift */; };
 		4FFEDAFB2B0E345A00C1682B /* FeedErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFEDAFA2B0E345A00C1682B /* FeedErrorViewModel.swift */; };
+		4FFEDAFE2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFEDAFD2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +222,7 @@
 		4FF4D1CB2B0D055D00453A24 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		4FF5F63F2AE05BCE00452ED7 /* FeedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewModel.swift; sourceTree = "<group>"; };
 		4FFEDAFA2B0E345A00C1682B /* FeedErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedErrorViewModel.swift; sourceTree = "<group>"; };
+		4FFEDAFD2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Helpers.swift .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -593,6 +595,7 @@
 				4F8B95B42A6D4C7C00292EF5 /* UIView+Shimmering.swift */,
 				4F7F04722B0B731800534715 /* UItableView+Dequeueing.swift */,
 				4F7F04742B0B745100534715 /* UIImageView+Animations.swift */,
+				4FFEDAFD2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -857,6 +860,7 @@
 				4FF4D1C52B0CC7D300453A24 /* FeedImageDataLoaderPresentationAdapter.swift in Sources */,
 				4FC277AD2AD2C7E200A084E5 /* FeedUIComposer.swift in Sources */,
 				4FFEDAFB2B0E345A00C1682B /* FeedErrorViewModel.swift in Sources */,
+				4FFEDAFE2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift in Sources */,
 				4F7F04732B0B731800534715 /* UItableView+Dequeueing.swift in Sources */,
 				4F7F04752B0B745100534715 /* UIImageView+Animations.swift in Sources */,
 			);
