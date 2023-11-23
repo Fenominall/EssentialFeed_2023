@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EssentialFeed_2023
 
 // MARK: - FeedViewAdapter
 final class FeedViewAdapter: FeedView {
