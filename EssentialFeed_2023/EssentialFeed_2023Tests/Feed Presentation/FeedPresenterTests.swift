@@ -8,7 +8,7 @@
 import XCTest
 import  EssentialFeed_2023
 
-class FeedPresenterTests: XCTestCase {
+final class FeedPresenterTests: XCTestCase {
     func test_title_isLocalized() {
         XCTAssertEqual(FeedPresenter.title, localized("FEED_VIEW_TITLE"))
 
@@ -17,7 +17,7 @@ class FeedPresenterTests: XCTestCase {
     func test_init_doesNotSendMessagesToView() {
         let (_, view) = makeSUT()
         
-        XCTAssert(view.messages.isEmpty, "Expected no view messages.")
+        XCTAssertTrue(view.messages.isEmpty, "Expected no view messages.")
     }
     
     func test_didStartLoadingFeed_displaysNoErrorMessageAndStartsLoading() {
