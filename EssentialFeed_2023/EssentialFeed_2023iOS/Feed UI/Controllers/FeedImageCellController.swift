@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import EssentialFeed_2023
+
 protocol FeedImageCellControllerDelegate {
     func didRequestImage()
     func didCancelImageRequest()
@@ -34,7 +36,6 @@ final class FeedImageCellController: FeedImageView {
         releaseCellForReuse()
         delegate.didCancelImageRequest()
     }
-    
     
     func display(_ viewModel: FeedImageViewModel<UIImage>) {
         cell?.locationContainer.isHidden = !viewModel.hasLocation
