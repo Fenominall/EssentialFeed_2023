@@ -47,6 +47,23 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertNotNil(receivedError)
     }
     
+    func test_cancelGetFromURLTask_cancelsURLRequest() {
+        let url = anyURL()
+        let exp = expectation(description: "Wait for request")
+        
+        let task = makeSUT().get(from: url) { result in
+            switch result {
+            case let .failure(error as NSError) where error.code == URLError.cancelled.rawValue:
+                break
+            default:
+                XCTFail("Expected cancelled result, got \(result) instead")
+            }
+            exp.fulfill()
+        }
+        task.cancel()
+        wait(for: [exp], timeout: 1.0)
+    }
+    
     func test_getFromURL_failsOnAllInvalidRepresentationCases() {
         XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
         XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPURLResponse(), error: nil))
@@ -80,7 +97,6 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertEqual(receivedValues?.response.url, response.url)
         XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
     }
-    
     
     // MARK: - Helpers
     // when your helper functions contain assertions, make sure to pass the file and line arguments to the helper function, so you can forward it as arguments to any XCTAssert... calls. This way, Xcode can highlight the appropriate line of code that was responsible for test failures.
