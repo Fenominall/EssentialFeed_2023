@@ -8,7 +8,6 @@
 import Foundation
 
 public final class URLSessionHTTPClient: HTTPClient {
-
     private let session: URLSession
     
     public init(session: URLSession = .shared) {
@@ -30,8 +29,7 @@ public final class URLSessionHTTPClient: HTTPClient {
             completion(Result {
                 if let error = error {
                     throw error
-                } else if let data = data,
-                          let response = response as? HTTPURLResponse {
+                } else if let data = data, let response = response as? HTTPURLResponse {
                     return (data, response)
                 } else {
                     throw UnexpectedValuesRepresentation()
@@ -42,4 +40,3 @@ public final class URLSessionHTTPClient: HTTPClient {
         return URLSessionTaskWrapper(wrapped: task)
     }
 }
-
