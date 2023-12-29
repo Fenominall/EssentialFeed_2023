@@ -151,6 +151,7 @@
 		4F06E2E32A0272A1004DD0ED /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		4F0DD0B72A0A9CB800A523E4 /* ValidateFeedCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateFeedCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		4F0DD0B92A0AA2E900A523E4 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
+		4F1665172B3F73FC009B5FDC /* EssentialFeed_2023APIEndToEndTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = EssentialFeed_2023APIEndToEndTests.xctestplan; sourceTree = "<group>"; };
 		4F1E9ED62B0B646C00E0B470 /* Feed.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
 		4F2172732AD15DA400F877F3 /* UIImage+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TestHelpers.swift"; sourceTree = "<group>"; };
 		4F2172752AD15F8700F877F3 /* UIRefreshControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+TestHelpers.swift"; sourceTree = "<group>"; };
@@ -458,6 +459,7 @@
 		4FA8706F29A50088000554BF = {
 			isa = PBXGroup;
 			children = (
+				4F1665172B3F73FC009B5FDC /* EssentialFeed_2023APIEndToEndTests.xctestplan */,
 				4F5529C82A48893700B043DE /* CI_iOS.xctestplan */,
 				4F5529C72A48867600B043DE /* EssentialFeed_2023iOS.xctestplan */,
 				4F6CFC182A3C803F007B35BF /* TestsTargetsSchemes */,
