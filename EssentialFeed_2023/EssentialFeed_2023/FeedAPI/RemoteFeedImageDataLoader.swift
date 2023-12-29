@@ -42,7 +42,6 @@ public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
         }
     }
     
-    @discardableResult
     public func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
         // The result passed in task.complere(with:) will be passed from the HTTPClientTaskWrapper to the completion of loadImageData() because completion in the class is the reference type
         let task = HTTPClientTaskWrapper(completion)
