@@ -44,14 +44,12 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
     // MARK: - Helpers
     private func getFeedResult(file: StaticString = #filePath,
                                line: UInt = #line) -> FeedLoader.Result? {
-        let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
-        
         // Using the .ephemeral strategy for URLSession in end to end test,
         // to avoid geting a a failure if for instance one time the test successfully passed and the response was cahched
         // and the next time I have not internet but the tests still passing because we have default caching
         // Use ephemeral URLSession configuration to avoid sharing state across test executions (in-disk cache artifacts)
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedLoader(url: testServerURL, client: client)
+        let loader = RemoteFeedLoader(url: feedTestServerURL, client: client)
         trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(loader, file: file, line: line)
         let exp = expectation(description: "Wait for load completion")
@@ -66,7 +64,7 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
     }
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
-        let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed/73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")!
+        let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedImageDataLoader(client: client)
         trackForMemoryLeaks(client, file: file, line: line)
@@ -75,13 +73,17 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
         let exp = expectation(description: "Wait for load completion")
         
         var receivedResult: FeedImageDataLoader.Result?
-        _ = loader.loadImageData(from: testServerURL, completion: { result in
+        _ = loader.loadImageData(from: url, completion: { result in
             receivedResult = result
             exp.fulfill()
         })
         wait(for: [exp], timeout: 5.0)
         
         return receivedResult
+    }
+    
+    private var feedTestServerURL: URL {
+        return URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed/")!
     }
     
     private func expectedImage(at index: Int) -> FeedImage {
