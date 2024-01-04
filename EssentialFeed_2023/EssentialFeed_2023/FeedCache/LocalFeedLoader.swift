@@ -81,7 +81,7 @@ extension LocalFeedLoader {
             guard let self = self else { return }
             
             switch result {
-            case .failure(_):
+            case .failure:
                 self.store.deleteCachedFeed { _ in completion(.success(())) }
             case let .success(.some(cahce))
                 where !FeedCachePolicy
