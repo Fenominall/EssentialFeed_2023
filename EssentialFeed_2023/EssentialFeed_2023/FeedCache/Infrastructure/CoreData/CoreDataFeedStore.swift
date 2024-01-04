@@ -33,7 +33,7 @@ public final class CoreDataFeedStore: FeedStore {
                 // by mapping the optional returned value we can eleminate if/else
                 // name parameter can be ommited by using $0
                 try ManagedCache.find(in: context).map {
-                    return CachedFeed(
+                    CachedFeed(
                         feed: $0.localFeed,
                         timestamp: $0.timestamp)
                 }
