@@ -73,19 +73,22 @@ extension LocalFeedLoader: FeedLoader {
 }
 
 extension LocalFeedLoader {
+    public typealias ValidationResult = Result<Void, Error>
+    
     // A Command changes the state of a system (side-effects) but does not return a value.
-    public func validateCache() {
+    public func validateCache(completion: @escaping (ValidationResult) -> Void = { _ in }) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .failure(_):
-                self.store.deleteCachedFeed { _ in }
+                self.store.deleteCachedFeed { _ in completion(.success(())) }
             case let .success(.some(cahce))
                 where !FeedCachePolicy
                     .validate(cahce.timestamp, against: self.currentDate()):
-                self.store.deleteCachedFeed { _ in }
-            case .success: break
+                self.store.deleteCachedFeed { _ in completion(.success(())) }
+            case .success:
+                completion(.success(()))
             }
         }
     }
