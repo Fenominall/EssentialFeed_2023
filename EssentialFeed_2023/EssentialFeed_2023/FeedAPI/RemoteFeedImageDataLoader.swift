@@ -19,6 +19,26 @@ public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
         case invalidData
     }
     
+    public func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+        // The result passed in task.complere(with:) will be passed from the HTTPClientTaskWrapper to the completion of loadImageData() because completion in the class is the reference type
+        let task = HTTPClientTaskWrapper(completion)
+        task.wrapped = client.get(from: url) { [weak self] result in
+            guard self != nil else { return }
+            
+            task.complete(with: result
+                .mapError({ _ in Error.connectivity })
+                .flatMap({ (data, response) in
+                    let isValidResponse = response.isOK && !data.isEmpty
+                    return isValidResponse ? .success(data) : .failure(Error.invalidData)
+                })
+            )
+        }
+        return task
+    }
+}
+
+extension RemoteFeedImageDataLoader {
+    
     private final class HTTPClientTaskWrapper: FeedImageDataLoaderTask {
         private var completion: ((FeedImageDataLoader.Result) -> Void)?
         
@@ -40,22 +60,5 @@ public final class RemoteFeedImageDataLoader: FeedImageDataLoader {
         private func preventFurtherCompletions() {
             completion = nil
         }
-    }
-    
-    public func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        // The result passed in task.complere(with:) will be passed from the HTTPClientTaskWrapper to the completion of loadImageData() because completion in the class is the reference type
-        let task = HTTPClientTaskWrapper(completion)
-        task.wrapped = client.get(from: url) { [weak self] result in
-            guard self != nil else { return }
-            
-            task.complete(with: result
-                .mapError({ _ in Error.connectivity })
-                .flatMap({ (data, response) in
-                    let isValidResponse = response.isOK && !data.isEmpty
-                    return isValidResponse ? .success(data) : .failure(Error.invalidData)
-                })
-            )
-        }
-        return task
     }
 }
