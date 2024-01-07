@@ -32,7 +32,7 @@ class FeedImageDataLoaderWithFallBackComposite: FeedImageDataLoader {
             case .success:
                 break
             case .failure:
-                _ = self?.fallback.loadImageData(from: url) { _ in }
+                task.wrapped = self?.fallback.loadImageData(from: url) { _ in }
             }
         }
         return task
@@ -80,24 +80,36 @@ class FeedImageDataLoaderWithFallBackCompositeTests: XCTestCase {
         XCTAssertTrue(fallbackLoader.loadedURLs.isEmpty, "Expected no cancelled URLs in the fallback loader")
     }
     
+    func test_cancelLoadImageData_cancelsFallbackLoaderTaskAfterPrimaryLoaderFailure() {
+        let url = anyURL()
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        
+        let task = sut.loadImageData(from: url) { _ in }
+        primaryLoader.complete(with: anyNSError())
+        task.cancel()
+        
+        XCTAssertTrue(primaryLoader.cancelledURLs.isEmpty, "Expected no cancelled URLs in the primary loader")
+        XCTAssertEqual(fallbackLoader.cancelledURLs, [url], "Expected to cancel URL loading from fallback loader")
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(
         file: StaticString = #file,
-        line: UInt = #line) 
+        line: UInt = #line)
     -> (sut: FeedImageDataLoader,
         primary: LoaderSpy,
         fallback: LoaderSpy) {
-            let primaryLoader = LoaderSpy()
-            let fallbackLoader = LoaderSpy()
-            let sut = FeedImageDataLoaderWithFallBackComposite(
-                primary: primaryLoader,
-                fallback: fallbackLoader)
-            trackForMemoryLeaks(primaryLoader, file: file, line: line)
-            trackForMemoryLeaks(fallbackLoader, file: file, line: line)
-            trackForMemoryLeaks(sut, file: file, line: line)
-            return (sut, primaryLoader, fallbackLoader)
-        }
+        let primaryLoader = LoaderSpy()
+        let fallbackLoader = LoaderSpy()
+        let sut = FeedImageDataLoaderWithFallBackComposite(
+            primary: primaryLoader,
+            fallback: fallbackLoader)
+        trackForMemoryLeaks(primaryLoader, file: file, line: line)
+        trackForMemoryLeaks(fallbackLoader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return (sut, primaryLoader, fallbackLoader)
+    }
     
     private func trackForMemoryLeaks(
         _ instance: AnyObject,
@@ -112,7 +124,7 @@ class FeedImageDataLoaderWithFallBackCompositeTests: XCTestCase {
         }
     
     private func anyNSError() -> NSError {
-            return NSError(domain: "any error", code: 0)
+        return NSError(domain: "any error", code: 0)
     }
     
     private func anyURL() -> URL {
@@ -131,7 +143,7 @@ class FeedImageDataLoaderWithFallBackCompositeTests: XCTestCase {
             let callback: () -> Void
             func cancel() { callback() }
         }
-
+        
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
             messages.append((url, completion))
             return Task { [weak self] in
