@@ -20,6 +20,11 @@
           "containerPath" : "container:EssentialFeed_2023.xcodeproj",
           "identifier" : "4F5529B12A4885FD00B043DE",
           "name" : "EssentialFeed_2023iOS"
+        },
+        {
+          "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+          "identifier" : "4F8FF54E2B48B33A00599BDD",
+          "name" : "EssentialApp"
         }
       ]
     },
@@ -52,6 +57,13 @@
         "containerPath" : "container:EssentialFeed_2023.xcodeproj",
         "identifier" : "4F5529B82A4885FE00B043DE",
         "name" : "EssentialFeed_2023iOSTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
+        "identifier" : "4F8FF5642B48B33C00599BDD",
+        "name" : "EssentialAppTests"
       }
     }
   ],
