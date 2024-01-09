@@ -2,12 +2,18 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:EssentialApp/XctestplansForEssentialApp/EssentialAppTests.xctestplan">
+   </FileRef>
+   <FileRef
+      location = "group:EssentialApp/XctestplansForEssentialApp/EssentialApp.xctestplan">
+   </FileRef>
+   <FileRef
       location = "group:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:EssentialApp/EssentialApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../EssentialApp.xctestplan">
+      location = "group:EssentialApp/XctestplansForEssentialApp/EssentialApp.xctestplan">
    </FileRef>
 </Workspace>
