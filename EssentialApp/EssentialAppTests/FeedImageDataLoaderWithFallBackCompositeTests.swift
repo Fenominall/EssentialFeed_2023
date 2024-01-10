@@ -96,10 +96,10 @@ class FeedImageDataLoaderWithFallBackCompositeTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line)
     -> (sut: FeedImageDataLoader,
-        primary: LoaderSpy,
-        fallback: LoaderSpy) {
-        let primaryLoader = LoaderSpy()
-        let fallbackLoader = LoaderSpy()
+        primary: FeedImageDataLoaderSpy,
+        fallback: FeedImageDataLoaderSpy) {
+        let primaryLoader = FeedImageDataLoaderSpy()
+        let fallbackLoader = FeedImageDataLoaderSpy()
         let sut = FeedImageDataLoaderWithFallBackComposite(
             primary: primaryLoader,
             fallback: fallbackLoader)
@@ -132,34 +132,5 @@ class FeedImageDataLoaderWithFallBackCompositeTests: XCTestCase {
         }
         action()
         wait(for: [exp], timeout: 1.0)
-    }
-
-    private class LoaderSpy: FeedImageDataLoader {
-        private var messages = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
-        
-        private(set) var cancelledURLs = [URL]()
-        
-        var loadedURLs: [URL] {
-            return messages.map { $0.url }
-        }
-        private struct Task: FeedImageDataLoaderTask {
-            let callback: () -> Void
-            func cancel() { callback() }
-        }
-        
-        func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-            messages.append((url, completion))
-            return Task { [weak self] in
-                self?.cancelledURLs.append(url)
-            }
-        }
-        
-        func complete(with error: Error, at index: Int = 0) {
-            messages[index].completion(.failure(error))
-        }
-        
-        func complete(with data: Data, at index: Int = 0) {
-            messages[index].completion(.success(data))
-        }
     }
 }
