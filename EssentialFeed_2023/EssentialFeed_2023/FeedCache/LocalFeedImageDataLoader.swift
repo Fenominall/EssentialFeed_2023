@@ -16,7 +16,7 @@ public final class LocalFeedImageDataLoader {
 }
 
 extension LocalFeedImageDataLoader {
-    public typealias SaveResult = Result<Void, Swift.Error>
+    public typealias SaveResult = Swift.Result<Void, Error>
     
     public enum SaveError: Error {
         case failed
