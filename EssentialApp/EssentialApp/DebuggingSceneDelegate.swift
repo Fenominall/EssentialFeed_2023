@@ -13,6 +13,7 @@ class DebuggingSceneDelegate: SceneDelegate {
     override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         
+        // reset the cache state
         if CommandLine.arguments.contains("-reset") {
             try? FileManager.default.removeItem(at: localStoreURL)
         }
@@ -20,6 +21,7 @@ class DebuggingSceneDelegate: SceneDelegate {
         
     }
     
+    // Replacing the HHTp client fith the fake
     override func makeRemoteClient() -> HTTPClient {
         if let connectivity = UserDefaults.standard.string(forKey: "connectivity") {
             return DebuggingHTTPClient(connectivity: connectivity)
