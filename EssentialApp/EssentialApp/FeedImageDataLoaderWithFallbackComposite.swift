@@ -8,7 +8,7 @@
 import Foundation
 import EssentialFeed_2023
 
-public final class FeedImageDataLoaderWithFallBackComposite: FeedImageDataLoader {
+public final class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
     private let primary: FeedImageDataLoader
     private let fallback: FeedImageDataLoader
     
