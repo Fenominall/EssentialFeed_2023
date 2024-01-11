@@ -14,10 +14,80 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4FA8707829A50088000554BF"
-               BuildableName = "EssentialFeed_2023.framework"
-               BlueprintName = "EssentialFeed_2023"
+               BlueprintIdentifier = "4F5DEBB129E33C6E00966E98"
+               BuildableName = "EssentialFeed_2023APIEndToEndTests.xctest"
+               BlueprintName = "EssentialFeed_2023APIEndToEndTests"
                ReferencedContainer = "container:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4F6CFC0C2A3C7EDF007B35BF"
+               BuildableName = "EssentialFeed_2023CacheIntegrationTests.xctest"
+               BlueprintName = "EssentialFeed_2023CacheIntegrationTests"
+               ReferencedContainer = "container:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4F5529B82A4885FE00B043DE"
+               BuildableName = "EssentialFeed_2023iOSTests.xctest"
+               BlueprintName = "EssentialFeed_2023iOSTests"
+               ReferencedContainer = "container:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4FA8708029A50089000554BF"
+               BuildableName = "EssentialFeed_2023Tests.xctest"
+               BlueprintName = "EssentialFeed_2023Tests"
+               ReferencedContainer = "container:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4F8FF5642B48B33C00599BDD"
+               BuildableName = "EssentialAppTests.xctest"
+               BlueprintName = "EssentialAppTests"
+               ReferencedContainer = "container:EssentialApp/EssentialApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B4841C582B501CAB00882B49"
+               BuildableName = "EssentialAppUIAcceptenceTests.xctest"
+               BlueprintName = "EssentialAppUIAcceptenceTests"
+               ReferencedContainer = "container:EssentialApp/EssentialApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,7 +99,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:CI_iOS.xctestplan"
+            reference = "container:EssentialFeed_2023/CI_iOS.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -51,15 +121,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4FA8707829A50088000554BF"
-            BuildableName = "EssentialFeed_2023.framework"
-            BlueprintName = "EssentialFeed_2023"
-            ReferencedContainer = "container:EssentialFeed_2023/EssentialFeed_2023.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
