@@ -19,7 +19,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return configuration
         }
-
-   
 }
 
