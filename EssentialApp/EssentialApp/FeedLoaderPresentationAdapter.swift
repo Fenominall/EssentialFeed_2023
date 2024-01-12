@@ -6,6 +6,7 @@
 //
 
 import EssentialFeed_2023
+import EssentialFeed_2023iOS
 
 final class FeedLoaderPresentationAdapter: FeedViewControllerDelegate {
     private let feedLoader: FeedLoader

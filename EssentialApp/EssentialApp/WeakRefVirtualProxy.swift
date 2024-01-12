@@ -5,8 +5,9 @@
 //  Created by Fenominall on 11/21/23.
 //
 
-import EssentialFeed_2023
 import UIKit
+import EssentialFeed_2023
+
 
 // MARK: - WeakRefVirtualProxy
 // Memory management is a composition detail that should not be part of MVP components.
