@@ -27,6 +27,13 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         refresh()
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Every time the method is called, the header view will be resized
+        tableView.sizeTableHeaderFit()
+    }
+    
     @IBAction private func refresh() {
         delegate?.didRequestFeedRefresh()
     }
