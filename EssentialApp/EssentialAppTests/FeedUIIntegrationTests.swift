@@ -22,7 +22,7 @@ import EssentialFeed_2023iOS
 //    [✅] Option to retry on image download error
 //    [✅] Preload when image view is near visible
 
-final class FeedUiIntegrationTests: XCTestCase {
+final class FeedUIIntegrationTests: XCTestCase {
     
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
