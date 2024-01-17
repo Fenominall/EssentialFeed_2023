@@ -12,6 +12,9 @@ import CoreData
 public final class CoreDataFeedStore {
     
     //MARK: - Properties
+    public static let storeURL = NSPersistentContainer
+        .defaultDirectoryURL()
+        .appending(path: "feed-store.sqlite")
     private static let modelName = "FeedStore"
     private static let model = NSManagedObjectModel.with(name: modelName, in: Bundle(for: CoreDataFeedStore.self))
     private let container: NSPersistentContainer
