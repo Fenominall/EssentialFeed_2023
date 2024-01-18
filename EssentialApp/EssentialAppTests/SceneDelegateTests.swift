@@ -17,7 +17,8 @@ class SceneDelegateTests: XCTestCase {
         sut.window = window
         
         sut.configureWindow()
-        
+ 
+        XCTAssertTrue(((sut.window?.isKeyWindow) != nil), "Expcted window to be the key window")
         XCTAssertFalse(window.isHidden, "Expected window to be visible")
     }
     
