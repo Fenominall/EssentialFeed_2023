@@ -12,11 +12,11 @@ import EssentialFeed_2023iOS
 // MARK: - FeedViewAdapter
 final class FeedViewAdapter: FeedView {
     private weak var controller: FeedViewController?
-    private let imageLoader: FeedImageDataLoader
+    private let imageLoader: (URL) -> FeedImageDataLoader.Publisher
     
-    init(controller: FeedViewController, loader: FeedImageDataLoader) {
+    init(controller: FeedViewController, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher) {
         self.controller = controller
-        self.imageLoader = loader
+        self.imageLoader = imageLoader
     }
     
     func display(_ viewModel: FeedViewModel) {
