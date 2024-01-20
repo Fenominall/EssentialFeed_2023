@@ -18,11 +18,13 @@ public final class FeedUIComposer {
     private init() {}
     
     // Passing a function taht can create Feedloader publishers
-    public static func feedComposedWith(feedLoader: @escaping () -> FeedLoader.Publisher,
-                                        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher) -> FeedViewController {
+    public static func feedComposedWith(
+        feedLoader: @escaping () -> FeedLoader.Publisher,
+        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher)
+    -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: { feedLoader().dispatchOnMainQueue() })
+        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
         
         let feedController = FeedViewController.makeWith(
             delegate: presentationAdapter,
@@ -31,7 +33,7 @@ public final class FeedUIComposer {
         presentationAdapter.presenter = FeedPresenter(
             feedView: FeedViewAdapter(
                 controller: feedController,
-                imageLoader: { imageLoader($0).dispatchOnMainQueue() }),
+                imageLoader: imageLoader),
             loadingView: WeakRefVirtualProxy(feedController),
             errorView: WeakRefVirtualProxy(feedController))
         return feedController
