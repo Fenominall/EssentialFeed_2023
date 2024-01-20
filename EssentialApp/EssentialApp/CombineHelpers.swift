@@ -104,6 +104,15 @@ extension DispatchQueue {
             DispatchQueue.main.minimumTolerance
         }
         
+        static let shared = Self()
+        
+        private static let key = DispatchSpecificKey<UInt8>()
+        private static let value = UInt8.max
+        
+        public init() {
+            DispatchQueue.main.setSpecific(key: Self.key, value: Self.value)
+        }
+        
         func schedule(options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) {
             guard Thread.isMainThread else {
                 return DispatchQueue.main.schedule(options: options, action)
