@@ -8,6 +8,7 @@
 import Foundation
 import EssentialFeed_2023
 
+
 final class MainQueueDispatchDecorator<T> {
     private let decoratee: T
     
@@ -20,14 +21,6 @@ final class MainQueueDispatchDecorator<T> {
             return DispatchQueue.main.async(execute: completion)
         }
         completion()
-    }
-}
-
-extension MainQueueDispatchDecorator: FeedLoader where T == FeedLoader {
-    func load(completion: @escaping (FeedLoader.Result) -> Void) {
-        decoratee.load { [weak self] result in
-            self?.dispatch { completion(result) }
-        }
     }
 }
 

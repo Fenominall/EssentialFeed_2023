@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import EssentialFeed_2023
 import EssentialFeed_2023iOS
 
@@ -16,10 +17,11 @@ import EssentialFeed_2023iOS
 public final class FeedUIComposer {
     private init() {}
     
-    public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
+    // Passing a function taht can create Feedloader publishers
+    public static func feedComposedWith(feedLoader: @escaping () -> FeedLoader.Publisher, imageLoader: FeedImageDataLoader) -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
+        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: { feedLoader().dispatchOnMainQueue() })
         
         let feedController = FeedViewController.makeWith(
             delegate: presentationAdapter,
