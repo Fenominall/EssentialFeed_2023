@@ -44,6 +44,9 @@ public extension FeedLoader {
     typealias Publisher = AnyPublisher<[FeedImage], Error>
     
     func loadPublisher() -> Publisher {
+        // A Deferred is a lazy publisher that awaits subscription before running.
+        // So you can use it to wrap and make an eager publisher lazy. 
+        // For example, you can wrap a Future to defer its work:
         Deferred {
             // Because the types match between RemoteFeedLoader completion block and the Future completion block
             // we can just path the load function for the completion parameter
@@ -57,7 +60,7 @@ public extension FeedLoader {
 extension Publisher {
     func fallback(to fallbackPublisher: @escaping () -> AnyPublisher<Output, Failure>)
     -> AnyPublisher<Output, Failure> {
-        // 'self' is the primary loader and the 'fallbackPublisher' is the fallback.
+        // First, it tries to use the primary source (self). If the primary publisher produces an error, use fallbackPublisher.
         self.catch { _ in fallbackPublisher() }.eraseToAnyPublisher()
     }
 }
