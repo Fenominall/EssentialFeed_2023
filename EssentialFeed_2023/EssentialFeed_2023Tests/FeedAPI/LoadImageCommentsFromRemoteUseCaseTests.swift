@@ -91,21 +91,24 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         
         let item1 = makeItem(
             id: UUID(),
-            imageURL: URL(string: "https://a-url.com")!)
+            message: "a message",
+            createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+            username: "a username"
+            )
         let item2 = makeItem(
             id: UUID(),
-            description: "a descreption",
-            location: "a location",
-            imageURL: URL(string: "https://another-url.com")!)
-        let itemModels = [item1.model, item2.model]
+            message: "another message",
+            createdAt: (Date(timeIntervalSince1970: 1577881882), "2020-01-01T12:31:22+00:00"),
+            username: "another username")
+        
+        let items = [item1.model, item2.model]
         
         let samples = [200, 201, 250, 280, 299]
-        
         samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: .success(itemModels)) {
+            expect(sut, toCompleteWith: .success(items), when: {
                 let json = makeItemsJSON([item1.json, item2.json])
                 client.complete(withStatusCode: code, data: json, at: index)
-            }
+            })
         }
     }
     
@@ -137,23 +140,26 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
     // MARK: - JSON Helpers
     private func makeItem(
         id: UUID,
-        description: String? = nil,
-        location: String? = nil,
-        imageURL: URL) ->
-    (model: FeedImage, json: [String: Any]) {
-        let item = FeedImage(
+        message: String,
+        createdAt: (date: Date, iso8601String: String),
+        username: String) ->
+    (model: ImageComment, json: [String: Any]) {
+        
+        let item = ImageComment(
             id: id,
-            description: description,
-            location: location,
-            url: imageURL)
-        // To avoid typecasting json to as [String : Any] we can use reduce()
-        let json = [
+            message: message,
+            createdAt: createdAt.date,
+            username: username)
+        
+        let json: [String: Any] = [
             "id": id.uuidString,
-            "description": description,
-            "location": location,
-            "image": imageURL.absoluteString
-        ].compactMapValues { $0 }
-        return (item, json )
+            "message": message,
+            "created_at": createdAt.iso8601String,
+            "author": [
+                "username": username
+            ]
+        ]
+        return (item, json)
     }
     
     //Function to group items into a payloud contract
