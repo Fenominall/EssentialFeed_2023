@@ -92,13 +92,15 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         let item1 = makeItem(
             id: UUID(),
             message: "a message",
-            createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+            createdAt: (Date(timeIntervalSince1970: 1598627222), 
+                        "2020-08-28T15:07:02+00:00"),
             username: "a username"
             )
         let item2 = makeItem(
             id: UUID(),
             message: "another message",
-            createdAt: (Date(timeIntervalSince1970: 1577881882), "2020-01-01T12:31:22+00:00"),
+            createdAt: (Date(timeIntervalSince1970: 1577881882), 
+                        "2020-01-01T12:31:22+00:00"),
             username: "another username")
         
         let items = [item1.model, item2.model]
