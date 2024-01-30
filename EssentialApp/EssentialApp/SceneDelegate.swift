@@ -85,3 +85,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
     }
 }
+
+// Marking RemoteLoader conform to the FeedLoader and deining the working resouce
+extension RemoteLoader: FeedLoader where Resource == [FeedImage] {}
