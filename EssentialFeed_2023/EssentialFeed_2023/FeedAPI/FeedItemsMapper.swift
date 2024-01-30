@@ -10,7 +10,7 @@ import Foundation
 // Lesson
 // 1. Being careful  with the Decodable design because it can couple modules
 // 2. Classisit approch by keeping to add test and refcatoring
-final class FeedItemsMapper {
+public final class FeedItemsMapper {
     private struct Root: Decodable {
         private let items: [RemoteFeedImage]
         
@@ -33,7 +33,7 @@ final class FeedItemsMapper {
         }
     }
     
-    static func map(
+    public static func map(
         _ data: Data,
         from response: HTTPURLResponse) throws -> [FeedImage] {
             guard response.isOK,
