@@ -8,46 +8,43 @@
 import XCTest
 import EssentialFeed_2023
 
-final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
+final class LoadImageCommentsMapperTests: XCTestCase {
     
-    func test_load_deliversErrorOnNon2XXHTTPResponse() {
-        let (sut, client) = makeSUT()
-        
+    func test_map_deliversErrorOnNon2XXHTTPResponse() throws {
+        let json = makeItemsJSON([])
         let samples = [199, 150, 300, 400, 404, 500]
         
-        samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: failure(.invalidData)) {
-                // dummy json implementation
-                let json = makeItemsJSON([])
-                client.complete(withStatusCode: code, data: json, at: index)
-            }
+        try samples.forEach { code in
+            XCTAssertThrowsError(
+                try ImageCommentsMapper
+                    .map(json,
+                         from: HTTPURLResponse(statusCode: code)))
         }
     }
     
-    func test_load_deliversErrorOn2XXHTTPResponseWithInvalidJSON() {
-        let (sut, client) = makeSUT()
-        
+    func test_map_deliversErrorOn2XXHTTPResponseWithInvalidJSON() throws {
+        let invalidJSON = Data("invalidJSON".utf8)
         let samples = [200, 201, 250, 280, 299]
         
-        samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: failure(.invalidData)) {
-                let invalidJSON = Data("invalidJSON".utf8)
-                client.complete(withStatusCode: code, data: invalidJSON, at: index)
-            }
+        try samples.forEach { code in
+            XCTAssertThrowsError(
+                try ImageCommentsMapper
+                    .map(invalidJSON,
+                         from: HTTPURLResponse(statusCode: code)))
         }
     }
     
     // MARK: - Checking Success Courses for VALID JSON
-    func test_load_deliversNoItemsOn2XXHTTPResponseWithEmptyList() {
-        let (sut, client) = makeSUT()
-        
+    func test_map_deliversNoItemsOn2XXHTTPResponseWithEmptyList() throws {
+        let emptyListJSON = makeItemsJSON([])
         let samples = [200, 201, 250, 280, 299]
         
-        samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: .success([])) {
-                let emptyListJSON = makeItemsJSON([])
-                client.complete(withStatusCode: code, data: emptyListJSON, at: index)
-            }
+        
+        try samples.forEach { code in
+            XCTAssertThrowsError(
+                try ImageCommentsMapper
+                    .map(emptyListJSON,
+                         from: HTTPURLResponse(statusCode: code)))
         }
     }
     
