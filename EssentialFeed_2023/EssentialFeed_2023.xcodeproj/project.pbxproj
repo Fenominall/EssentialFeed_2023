@@ -465,9 +465,9 @@
 		4FA8707B29A50088000554BF /* EssentialFeed_2023 */ = {
 			isa = PBXGroup;
 			children = (
-				B43B91562B66937F00C4F05A /* Image Comments API */,
 				B43B91512B66922500C4F05A /* Shared API */,
 				B43B91522B66926000C4F05A /* Shared API Infra */,
+				B43B91562B66937F00C4F05A /* Image Comments API */,
 				B43B91502B66755600C4F05A /* Image Comments Feature */,
 				4FA8709529A50B94000554BF /* FeedFeature */,
 				4FB1E0C62B0FE2CD0040F8E3 /* Feed Presentation */,

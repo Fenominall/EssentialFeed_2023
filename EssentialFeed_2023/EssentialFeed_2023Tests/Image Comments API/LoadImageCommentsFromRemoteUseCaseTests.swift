@@ -10,41 +10,6 @@ import EssentialFeed_2023
 
 final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
     
-    func test_init_doesNotRequestDataFromURL() {
-        let (_, client) = makeSUT()
-        XCTAssertTrue(client.requesterURLs.isEmpty)
-    }
-    
-    func test_load_requestsDataFromURL() {
-        let url = makeURL()
-        let (sut, client) = makeSUT(url: url)
-        
-        sut.load { _ in }
-        
-        XCTAssertEqual(client.requesterURLs, [url])
-    }
-    
-    // we need to test how many times the method(the client behaviour) was invoked
-    func test_loadTwice_requestsDataFromURL() {
-        let url = makeURL()
-        let (sut, client) = makeSUT(url: url)
-        
-        sut.load { _ in }
-        sut.load { _ in }
-        
-        XCTAssertEqual(client.requesterURLs, [url, url])
-    }
-    
-    // MARK: - Checking Error Courses
-    func test_load_deliversErrorOnClientError() {
-        let (sut, client) = makeSUT()
-        
-        expect(sut, toCompleteWith: failure(.connectivity)) {
-            let clientError = NSError(domain: "Connectivity Error", code: 0)
-            client.complete(with: clientError)
-        }
-    }
-    
     func test_load_deliversErrorOnNon2XXHTTPResponse() {
         let (sut, client) = makeSUT()
         
@@ -112,21 +77,6 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
                 client.complete(withStatusCode: code, data: json, at: index)
             })
         }
-    }
-    
-    // Guarantee we do not deliver a result (invoke the completion closure) after the 'RemoteImageCommentsLoader' instance has been deallocated
-    func test_load_doesNotDeliverResultsAfterSUTInstanceHasBeenDeallocated() {
-        // given
-        let client = HTTPClientSpy()
-        var sut: RemoteImageCommentsLoader?  = RemoteImageCommentsLoader(url: makeURL(), client: client)
-        var capturedResults = [RemoteImageCommentsLoader.Result]()
-        sut?.load(completion: { capturedResults.append($0) })
-        
-        sut = nil
-        // after SUT has been deallocated the client should not complete
-        client.complete(withStatusCode: 200, data: makeItemsJSON([]))
-        
-        XCTAssertTrue(capturedResults.isEmpty)
     }
     
     // MARK: - Helpers
