@@ -19,7 +19,7 @@ public final class FeedUIComposer {
     
     // Passing a function taht can create Feedloader publishers
     public static func feedComposedWith(
-        feedLoader: @escaping () -> FeedLoader.Publisher,
+        feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher)
     -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer

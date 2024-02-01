@@ -48,8 +48,8 @@ extension LocalFeedLoader: FeedCache {
 }
 
 
-extension LocalFeedLoader: FeedLoader {
-    public typealias LoadResult = FeedLoader.Result
+extension LocalFeedLoader {
+    public typealias LoadResult = Swift.Result<[FeedImage], Error>
 
     //  Query should only return a result and should not have side-effects (does not change the observable state of the system).
     public func load(completion: @escaping (LoadResult) -> Void) {

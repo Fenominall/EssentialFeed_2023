@@ -43,7 +43,7 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
     
     // MARK: - Helpers
     private func getFeedResult(file: StaticString = #filePath,
-                               line: UInt = #line) -> FeedLoader.Result? {
+                               line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
         // Using the .ephemeral strategy for URLSession in end to end test,
         // to avoid geting a a failure if for instance one time the test successfully passed and the response was cahched
         // and the next time I have not internet but the tests still passing because we have default caching
@@ -51,7 +51,7 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
         let client = ephemeralClient()
         let exp = expectation(description: "Wait for load completion")
         
-        var receivedResult: FeedLoader.Result?
+        var receivedResult: Swift.Result<[FeedImage], Error>?
         client.get(from: feedTestServerURL) { result in
             receivedResult = result.flatMap { (data, response) in
                 do {
