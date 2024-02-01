@@ -10,10 +10,15 @@ import XCTest
 
 final class LoadFeedImageDataFromRemoteUseCaseTests: XCTestCase {
     
-    func test_init_doesNotPerformAnyURLRequest() {
-        let (_, client) = makeSUT()
+    func test_map_throwsErrorOnNon200HTTPResponse() throws {
+        let samples = [199, 201, 300, 400, 404, 500]
         
-        XCTAssertTrue(client.requestedURLs.isEmpty)
+        try samples.forEach { code in
+            XCTAssertThrowsError(
+                try FeedImageDataMapper
+                    .map(anyData(),
+                         from: HTTPURLResponse(statusCode: code)))
+        }
     }
     
     func test_loadImageDataFromURL_requestsDataFromURL() {
