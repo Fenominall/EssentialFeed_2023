@@ -8,7 +8,7 @@
 import EssentialFeed_2023
 import XCTest
 
-final class LoadFeedImageDataFromRemoteUseCaseTests: XCTestCase {
+final class FeedImageDataMapperTests: XCTestCase {
     
     func test_map_throwsErrorOnNon200HTTPResponse() throws {
         let samples = [199, 201, 300, 400, 404, 500]
