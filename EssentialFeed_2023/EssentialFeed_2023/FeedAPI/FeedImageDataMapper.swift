@@ -17,8 +17,8 @@ public final class FeedImageDataMapper {
         _ data: Data,
         from response: HTTPURLResponse) throws -> Data {
             guard response.isOK, !data.isEmpty else {
-                throw NSError(domain: "0", code: 1)
+                throw Error.invalidData
                 }
-            return Data()
+            return data
         }
 }
