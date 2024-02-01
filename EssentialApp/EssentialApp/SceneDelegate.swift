@@ -33,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     //the operation because the Combine publisher is not holding a reference to it anymore.
     // To solve it, you can create a property to hold a reference to the `RemoteFeedLoader` instance in the `SceneDelegate`.
     private lazy var remoteFeedLoader = {
-        RemoteFeedLoader(url: remoteURL, client: httpClient)
+        RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemsMapper.map)
     }()
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
