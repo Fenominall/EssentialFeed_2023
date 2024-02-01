@@ -48,13 +48,18 @@ final class EssentialFeed_2023APIEndToEndTests: XCTestCase {
         // to avoid geting a a failure if for instance one time the test successfully passed and the response was cahched
         // and the next time I have not internet but the tests still passing because we have default caching
         // Use ephemeral URLSession configuration to avoid sharing state across test executions (in-disk cache artifacts)
-        let loader = RemoteLoader(url: feedTestServerURL, client: ephemeralClient(), mapper: FeedItemsMapper.map)
-        trackForMemoryLeaks(loader, file: file, line: line)
+        let client = ephemeralClient()
         let exp = expectation(description: "Wait for load completion")
         
         var receivedResult: FeedLoader.Result?
-        loader.load { result in
-            receivedResult = result
+        client.get(from: feedTestServerURL) { result in
+            receivedResult = result.flatMap { (data, response) in
+                do {
+                    return .success(try FeedItemsMapper.map(data, from: response))
+                } catch {
+                    return .failure(error)
+                }
+            }
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5)

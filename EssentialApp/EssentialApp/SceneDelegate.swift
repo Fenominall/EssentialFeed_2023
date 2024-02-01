@@ -28,13 +28,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     private let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
-    // Moved the creation of remoteFeedLoader out of makeRemoteFeedLoaderWithLocalFallback,
-    // because the `RemoteFeedLoader` is being deallocated before it completes,
-    //the operation because the Combine publisher is not holding a reference to it anymore.
-    // To solve it, you can create a property to hold a reference to the `RemoteFeedLoader` instance in the `SceneDelegate`.
-    private lazy var remoteFeedLoader = {
-        RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemsMapper.map)
-    }()
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
@@ -90,6 +83,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
     }
 }
-
-// Marking RemoteLoader conform to the FeedLoader and deining the working resouce
-extension RemoteLoader: FeedLoader where Resource == [FeedImage] {}
