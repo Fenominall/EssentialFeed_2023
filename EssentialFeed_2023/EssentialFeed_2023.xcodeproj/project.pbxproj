@@ -88,6 +88,8 @@
 		B4DBC2432B6BF41400D1D44E /* FeedImageDataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DBC2412B6BF40300D1D44E /* FeedImageDataMapper.swift */; };
 		B4E70EC52B6EBA51009B3E0D /* LoadResourcePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E70EC42B6EBA51009B3E0D /* LoadResourcePresenterTests.swift */; };
 		B4E70EC82B6EBD02009B3E0D /* LoadResourcePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E70EC72B6EBD02009B3E0D /* LoadResourcePresenter.swift */; };
+		B4E70ECC2B6EC910009B3E0D /* SharedLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E70ECB2B6EC910009B3E0D /* SharedLocalizationTests.swift */; };
+		B4E70ECD2B6EC9E1009B3E0D /* Shared.strings in Resources */ = {isa = PBXBuildFile; fileRef = B4E70ECF2B6EC9E1009B3E0D /* Shared.strings */; };
 		B4F205722B4E96D700C1D37E /* FeedImageDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F205712B4E96D700C1D37E /* FeedImageDataCache.swift */; };
 /* End PBXBuildFile section */
 
@@ -230,6 +232,9 @@
 		B4DBC2412B6BF40300D1D44E /* FeedImageDataMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataMapper.swift; sourceTree = "<group>"; };
 		B4E70EC42B6EBA51009B3E0D /* LoadResourcePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadResourcePresenterTests.swift; sourceTree = "<group>"; };
 		B4E70EC72B6EBD02009B3E0D /* LoadResourcePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadResourcePresenter.swift; sourceTree = "<group>"; };
+		B4E70ECB2B6EC910009B3E0D /* SharedLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedLocalizationTests.swift; sourceTree = "<group>"; };
+		B4E70ECE2B6EC9E1009B3E0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Shared.strings; sourceTree = "<group>"; };
+		B4E70ED02B6EC9EA009B3E0D /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Shared.strings"; sourceTree = "<group>"; };
 		B4F205712B4E96D700C1D37E /* FeedImageDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -648,6 +653,7 @@
 			isa = PBXGroup;
 			children = (
 				B4E70EC42B6EBA51009B3E0D /* LoadResourcePresenterTests.swift */,
+				B4E70ECB2B6EC910009B3E0D /* SharedLocalizationTests.swift */,
 			);
 			path = "Shared Presentation";
 			sourceTree = "<group>";
@@ -656,6 +662,7 @@
 			isa = PBXGroup;
 			children = (
 				B4E70EC72B6EBD02009B3E0D /* LoadResourcePresenter.swift */,
+				B4E70ECF2B6EC9E1009B3E0D /* Shared.strings */,
 			);
 			path = "Shared Presentation";
 			sourceTree = "<group>";
@@ -885,6 +892,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB1E0CF2B0FE5110040F8E3 /* Feed.strings in Resources */,
+				B4E70ECD2B6EC9E1009B3E0D /* Shared.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,6 +1008,7 @@
 				4FCE20602A091E5400681714 /* FeedStoreSpy.swift in Sources */,
 				4F2B694F2A2518120044AA5F /* XCTestCase+FailableDeleteFeedStoreSpecs.swift .swift in Sources */,
 				B4E70EC52B6EBA51009B3E0D /* LoadResourcePresenterTests.swift in Sources */,
+				B4E70ECC2B6EC910009B3E0D /* SharedLocalizationTests.swift in Sources */,
 				4F1D47072B40A86E00DDC6E2 /* CacheFeedImageDataUseCaseTests.swift in Sources */,
 				4F0DD0B82A0A9CB800A523E4 /* ValidateFeedCacheUseCaseTests.swift in Sources */,
 				4F0DD0BA2A0AA2E900A523E4 /* SharedTestHelpers.swift in Sources */,
@@ -1068,6 +1077,15 @@
 				4FB1E0C52B0FE0070040F8E3 /* pt-BR */,
 			);
 			name = Feed.strings;
+			sourceTree = "<group>";
+		};
+		B4E70ECF2B6EC9E1009B3E0D /* Shared.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B4E70ECE2B6EC9E1009B3E0D /* en */,
+				B4E70ED02B6EC9EA009B3E0D /* pt-BR */,
+			);
+			name = Shared.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
