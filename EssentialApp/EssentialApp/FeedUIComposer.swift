@@ -24,7 +24,7 @@ public final class FeedUIComposer {
     -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
+        let presentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: feedLoader)
         
         let feedController = FeedViewController.makeWith(
             delegate: presentationAdapter,
