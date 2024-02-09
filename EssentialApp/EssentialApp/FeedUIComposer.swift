@@ -23,12 +23,12 @@ public final class FeedUIComposer {
     public static func feedComposedWith(
         feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher)
-    -> FeedViewController {
+    -> ListViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
         let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
         
-        let feedController = FeedViewController.makeWith(
+        let feedController = ListViewController.makeWith(
             delegate: presentationAdapter,
             title: FeedPresenter.title)
         
@@ -44,11 +44,11 @@ public final class FeedUIComposer {
     }
 }
 
-private extension FeedViewController {
-    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
-        let bundle = Bundle(for: FeedViewController.self)
+private extension ListViewController {
+    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> ListViewController {
+        let bundle = Bundle(for: ListViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
-        let feedViewController = storyboard.instantiateInitialViewController() as! FeedViewController
+        let feedViewController = storyboard.instantiateInitialViewController() as! ListViewController
         feedViewController.delegate = delegate
         feedViewController.title = title
         return feedViewController
