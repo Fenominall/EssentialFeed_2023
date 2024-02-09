@@ -17,6 +17,8 @@ import EssentialFeed_2023iOS
 public final class FeedUIComposer {
     private init() {}
     
+    private typealias FeedPresentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>
+    
     // Passing a function taht can create Feedloader publishers
     public static func feedComposedWith(
         feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
@@ -24,7 +26,7 @@ public final class FeedUIComposer {
     -> FeedViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
-        let presentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: feedLoader)
+        let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
         
         let feedController = FeedViewController.makeWith(
             delegate: presentationAdapter,
