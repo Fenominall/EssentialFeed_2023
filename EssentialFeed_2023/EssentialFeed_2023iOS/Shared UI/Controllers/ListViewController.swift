@@ -8,8 +8,6 @@
 import UIKit
 import EssentialFeed_2023
 
-public typealias CellController = UITableViewDataSource & UITableViewDelegate & UITableViewDataSourcePrefetching
-
 public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
 
     public var onRefresh: (() -> Void)?
@@ -57,26 +55,26 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let controller = cellControll(forRowAt: indexPath)
-        return controller.tableView(tableView, cellForRowAt: indexPath)
+        let dataSource = cellControll(forRowAt: indexPath).dataSource
+        return dataSource.tableView(tableView, cellForRowAt: indexPath)
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let controller = removeLoadingController(forRowAt: indexPath)
-        controller?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
+        let delegate = removeLoadingController(forRowAt: indexPath)?.delegate
+        delegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let controller = cellControll(forRowAt: indexPath)
-            controller.tableView(tableView, prefetchRowsAt: [indexPath])
+            let dsPrefetching = cellControll(forRowAt: indexPath).dataSourcePrefetching
+            dsPrefetching?.tableView(tableView, prefetchRowsAt: [indexPath])
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let controller = cellControll(forRowAt: indexPath)
-            controller.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
+            let dsPrefetching = cellControll(forRowAt: indexPath).dataSourcePrefetching
+            dsPrefetching?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
     }
     
