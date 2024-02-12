@@ -9,7 +9,7 @@ import UIKit
 import EssentialFeed_2023
 
 public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
-
+    
     private(set) public var errorView = ErrorView()
     
     private var loadingControllers = [IndexPath: CellController]()
@@ -29,32 +29,28 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        // # Step 2 - make UITableViewController as UITableViewDiffableDataSource
-        tableView.dataSource = dataSource
-        configureErrorView()
+        configureTableView()
         refresh()
     }
     
-    private func configureErrorView() {
-        let container = UIView()
-        container.backgroundColor = .clear
-        container.addSubview(errorView)
-        
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            errorView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: errorView.trailingAnchor),
-            errorView.topAnchor.constraint(equalTo: container.topAnchor),
-            container.bottomAnchor.constraint(equalTo: errorView.bottomAnchor)
-            
-        ])
-        
-        tableView.tableHeaderView = container
+    private func configureTableView() {
+        dataSource.defaultRowAnimation = .fade
+        // # Step 2 - make UITableViewController as UITableViewDiffableDataSource
+        tableView.dataSource = dataSource
+        tableView.tableHeaderView = errorView.makeContainer()
         
         errorView.onHide = { [weak self] in
             self?.tableView.beginUpdates()
             self?.tableView.sizeTableHeaderFit()
             self?.tableView.endUpdates()
+        }
+    }
+    
+    private func configureTraitCollectionObservers() {
+        registerForTraitChanges(
+            [UITraitPreferredContentSizeCategory.self]
+        ) { (self: Self, previous: UITraitCollection) in
+            self.tableView.reloadData()
         }
     }
     
@@ -64,21 +60,23 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         // Every time the method is called, the header view will be resized
         tableView.sizeTableHeaderFit()
     }
-        
-    @IBAction private func refresh() {
+    
+    @objc private func refresh() {
         onRefresh?()
     }
     
     // # Step 3
     // every time new controllers arrive
-    public func display(_ cellControllers: [CellController]) {
+    public func display(_ sections: [CellController]...) {
         // a new empty snapshot created
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
         // new controllers appended
-        snapshot.appendSections([0])
-        snapshot.appendItems(cellControllers, toSection: 0)
+        sections.enumerated().forEach { section, cellControllers in
+            snapshot.appendSections([section])
+            snapshot.appendItems(cellControllers, toSection: section)
+        }
         // data source will ceck what change using the hashable implementation and only updates what is necessary
-        dataSource.apply(snapshot)
+        dataSource.applySnapshotUsingReloadData(snapshot)
     }
     
     public func display(_ viewModel: ResourceLoadingViewModel) {

@@ -120,6 +120,7 @@
 		B4E70ECC2B6EC910009B3E0D /* SharedLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E70ECB2B6EC910009B3E0D /* SharedLocalizationTests.swift */; };
 		B4E70ECD2B6EC9E1009B3E0D /* Shared.strings in Resources */ = {isa = PBXBuildFile; fileRef = B4E70ECF2B6EC9E1009B3E0D /* Shared.strings */; };
 		B4F205722B4E96D700C1D37E /* FeedImageDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F205712B4E96D700C1D37E /* FeedImageDataCache.swift */; };
+		B4FE634F2B7A511800A23B48 /* UIView+Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FE634E2B7A511800A23B48 /* UIView+Container.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -295,6 +296,7 @@
 		B4E70ECE2B6EC9E1009B3E0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Shared.strings; sourceTree = "<group>"; };
 		B4E70ED02B6EC9EA009B3E0D /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Shared.strings"; sourceTree = "<group>"; };
 		B4F205712B4E96D700C1D37E /* FeedImageDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataCache.swift; sourceTree = "<group>"; };
+		B4FE634E2B7A511800A23B48 /* UIView+Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Container.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -786,6 +788,7 @@
 				4FFEDAFD2B0E524F00C1682B /* UIRefreshControl+Helpers.swift .swift */,
 				4F7F04722B0B731800534715 /* UItableView+Dequeueing.swift */,
 				B41542BA2B53F00B00048178 /* UITableView+HeaderSizing.swift */,
+				B4FE634E2B7A511800A23B48 /* UIView+Container.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1147,6 +1150,7 @@
 				B41542BB2B53F00B00048178 /* UITableView+HeaderSizing.swift in Sources */,
 				4FF4D1CC2B0D055D00453A24 /* ErrorView.swift in Sources */,
 				4F8B95B52A6D4C7C00292EF5 /* UIView+Shimmering.swift in Sources */,
+				B4FE634F2B7A511800A23B48 /* UIView+Container.swift in Sources */,
 				B41705A22B78D7F900E963B5 /* CellController.swift in Sources */,
 				4F69D13F2A640F1F006CABEB /* ListViewController.swift in Sources */,
 				4FF3BB252A6818160005D723 /* FeedImageCell.swift in Sources */,
