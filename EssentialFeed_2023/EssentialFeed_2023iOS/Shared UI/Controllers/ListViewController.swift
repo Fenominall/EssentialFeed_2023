@@ -14,15 +14,23 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     
     private var loadingControllers = [IndexPath: CellController]()
     
-    private var tableModel = [CellController]() {
-        didSet { tableView.reloadData() }
-    }
+    // # Step 1
+    // control the state to reload automatically what cahnge, using Int for section and the models for data source
+    // The model needs to be hashable
+    private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
+        .init(tableView: tableView) { tableView, indexPath, controller in
+            print("\(indexPath)")
+            return controller.dataSource.tableView(tableView, cellForRowAt: indexPath)
+        }
+    }()
     
     public var onRefresh: (() -> Void)?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        // # Step 2 - make UITableViewController as UITableViewDiffableDataSource
+        tableView.dataSource = dataSource
         configureErrorView()
         refresh()
     }
@@ -56,14 +64,21 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         // Every time the method is called, the header view will be resized
         tableView.sizeTableHeaderFit()
     }
-    
+        
     @IBAction private func refresh() {
         onRefresh?()
     }
     
+    // # Step 3
+    // every time new controllers arrive
     public func display(_ cellControllers: [CellController]) {
-        loadingControllers = [:]
-        tableModel = cellControllers
+        // a new empty snapshot created
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
+        // new controllers appended
+        snapshot.appendSections([0])
+        snapshot.appendItems(cellControllers, toSection: 0)
+        // data source will ceck what change using the hashable implementation and only updates what is necessary
+        dataSource.apply(snapshot)
     }
     
     public func display(_ viewModel: ResourceLoadingViewModel) {
@@ -74,45 +89,27 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         errorView.message = viewModel.message
     }
     
-    
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModel.count
-    }
-    
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dataSource = cellControll(forRowAt: indexPath).dataSource
-        return dataSource.tableView(tableView, cellForRowAt: indexPath)
-    }
-    
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let delegate = removeLoadingController(forRowAt: indexPath)?.delegate
+        let delegate = cellControll(at: indexPath)?.delegate
         delegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let dsPrefetching = cellControll(forRowAt: indexPath).dataSourcePrefetching
+            let dsPrefetching = cellControll(at: indexPath)?.dataSourcePrefetching
             dsPrefetching?.tableView(tableView, prefetchRowsAt: [indexPath])
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let dsPrefetching = cellControll(forRowAt: indexPath).dataSourcePrefetching
+            let dsPrefetching = cellControll(at: indexPath)?.dataSourcePrefetching
             dsPrefetching?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
     }
     
     // MARK: - Helpers
-    private func cellControll(forRowAt indexPath: IndexPath) -> CellController {
-        let controller = tableModel[indexPath.row]
-        loadingControllers[indexPath] = controller
-        return controller
-    }
-  
-    private func removeLoadingController(forRowAt indexPath: IndexPath) -> CellController? {
-        let controller = loadingControllers[indexPath]
-        loadingControllers[indexPath] = nil
-        return controller
+    private func cellControll(at indexPath: IndexPath) -> CellController? {
+        dataSource.itemIdentifier(for: indexPath)
     }
 }

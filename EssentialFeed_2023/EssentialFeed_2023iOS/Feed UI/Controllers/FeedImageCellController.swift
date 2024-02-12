@@ -56,7 +56,7 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
         cancelLoad()
     }
     
-    private func cancelLoad() {
+    private  func cancelLoad() {
         releaseCellForReuse()
         delegate.didCancelImageRequest()
     }

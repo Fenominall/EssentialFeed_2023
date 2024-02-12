@@ -35,7 +35,7 @@ final class FeedViewAdapter: ResourceView {
                 loadingView: WeakRefVirtualProxy(view),
                 errorView: WeakRefVirtualProxy(view),
                 mapper: mapDataIntoImage)
-            return CellController(view)
+            return CellController(id: model ,view)
         })
     }
     // MARK: - Helpers
