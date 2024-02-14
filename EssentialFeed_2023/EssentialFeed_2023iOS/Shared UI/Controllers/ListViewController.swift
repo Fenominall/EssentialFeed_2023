@@ -18,8 +18,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     // control the state to reload automatically what cahnge, using Int for section and the models for data source
     // The model needs to be hashable
     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) { tableView, indexPath, controller in
-            print("\(indexPath)")
+        .init(tableView: tableView) { (tableView, indexPath, controller) in
             return controller.dataSource.tableView(tableView, cellForRowAt: indexPath)
         }
     }()
@@ -30,6 +29,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         super.viewDidLoad()
         
         configureTableView()
+        configureTraitCollectionObservers()
         refresh()
     }
     
