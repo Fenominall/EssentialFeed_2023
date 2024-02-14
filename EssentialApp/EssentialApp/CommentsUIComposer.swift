@@ -23,7 +23,7 @@ public final class CommentsUIComposer {
         // This is the right way
         let presentationAdapter = FeedPresentationAdapter(loader: commentsLoader)
         
-        let feedController = ListViewController.makeWith(title: FeedPresenter.title)
+        let feedController = ListViewController.makeWith(title: ImageCommentsPresenter.title)
         feedController.onRefresh = presentationAdapter.loadResource
         
         presentationAdapter.presenter = LoadResourcePresenter(
@@ -41,7 +41,7 @@ public final class CommentsUIComposer {
 private extension ListViewController {
     static func makeWith(title: String) -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
-        let storyboard = UIStoryboard(name: "Comments", bundle: bundle)
+        let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
         let feedViewController = storyboard.instantiateInitialViewController() as! ListViewController
         feedViewController.title = title
         return feedViewController
