@@ -22,7 +22,9 @@ public final class FeedUIComposer {
     // Passing a function taht can create Feedloader publishers
     public static func feedComposedWith(
         feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
-        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher)
+        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher,
+        selection: @escaping (FeedImage) -> Void = { _ in }
+    )
     -> ListViewController {
         // Objects should not create their dependencies, it should be done in the composer
         // This is the right way
@@ -34,7 +36,8 @@ public final class FeedUIComposer {
         presentationAdapter.presenter = LoadResourcePresenter(
             resourceView: FeedViewAdapter(
                 controller: feedController,
-                imageLoader: imageLoader),
+                imageLoader: imageLoader,
+                selection: selection),
             loadingView: WeakRefVirtualProxy(feedController),
             errorView: WeakRefVirtualProxy(feedController),
             mapper: FeedPresenter.map
