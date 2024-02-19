@@ -20,10 +20,12 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource {
     }
 }
 
-extension LoadMoreCellController: ResourceLoadingView {
+extension LoadMoreCellController: ResourceLoadingView, ResourceErrorView {
     public func display(_ viewModel: EssentialFeed_2023.ResourceLoadingViewModel) {
         cell.isLoading = viewModel.isLoading
     }
     
-    
+    public func display(_ viewModel: EssentialFeed_2023.ResourceErrorViewModel) {
+        cell.message = viewModel.message
+    }
 }
