@@ -47,10 +47,14 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     }
     
     private func configureTraitCollectionObservers() {
-        registerForTraitChanges(
-            [UITraitPreferredContentSizeCategory.self]
-        ) { (self: Self, previous: UITraitCollection) in
-            self.tableView.reloadData()
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges(
+                [UITraitPreferredContentSizeCategory.self]
+            ) { (self: Self, previous: UITraitCollection) in
+                self.tableView.reloadData()
+            }
+        } else {
+            // Fallback on earlier versions
         }
     }
     
@@ -67,6 +71,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     
     // # Step 3
     // every time new controllers arrive
+    // Using ... dots to support multiple sections
     public func display(_ sections: [CellController]...) {
         // a new empty snapshot created
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
@@ -88,31 +93,36 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let delegate = cellControll(at: indexPath)?.delegate
+        let delegate = cellController(at: indexPath)?.delegate
         delegate?.tableView?(tableView, didSelectRowAt: indexPath)
     }
     
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+    }
+    
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let delegate = cellControll(at: indexPath)?.delegate
+        let delegate = cellController(at: indexPath)?.delegate
         delegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let dsPrefetching = cellControll(at: indexPath)?.dataSourcePrefetching
+            let dsPrefetching = cellController(at: indexPath)?.dataSourcePrefetching
             dsPrefetching?.tableView(tableView, prefetchRowsAt: [indexPath])
         }
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let dsPrefetching = cellControll(at: indexPath)?.dataSourcePrefetching
+            let dsPrefetching = cellController(at: indexPath)?.dataSourcePrefetching
             dsPrefetching?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
         }
     }
     
     // MARK: - Helpers
-    private func cellControll(at indexPath: IndexPath) -> CellController? {
+    private func cellController(at indexPath: IndexPath) -> CellController? {
         dataSource.itemIdentifier(for: indexPath)
     }
 }
