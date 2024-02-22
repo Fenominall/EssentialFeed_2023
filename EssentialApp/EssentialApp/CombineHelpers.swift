@@ -9,6 +9,19 @@ import Foundation
 import Combine
 import EssentialFeed_2023
 
+// converting - public typealias LoadMoreCompletion = (Result<Self, Error>) -> Void - into a Combine publisher
+public extension Paginated {
+    var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
+        guard let loadMore = loadMore else { return nil }
+        
+        return {
+            Deferred {
+                Future(loadMore)
+            }.eraseToAnyPublisher()
+        }
+    }
+}
+
 // This is the RemoteLoader now as abstraction
 public extension HTTPClient {
     typealias Publisher = AnyPublisher<(Data, HTTPURLResponse), Error>
@@ -61,7 +74,7 @@ public extension LocalFeedLoader {
     
     func loadPublisher() -> Publisher {
         // A Deferred is a lazy publisher that awaits subscription before running.
-        // So you can use it to wrap and make an eager publisher lazy. 
+        // So you can use it to wrap and make an eager publisher lazy.
         // For example, you can wrap a Future to defer its work:
         Deferred {
             // Because the types match between RemoteFeedLoader completion block and the Future completion block
