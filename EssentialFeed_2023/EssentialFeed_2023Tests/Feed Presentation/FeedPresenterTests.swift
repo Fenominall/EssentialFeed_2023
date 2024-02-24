@@ -3,7 +3,6 @@
 //  EssentialFeed_2023Tests
 //
 //  Created by Fenominall on 11/21/23.
-//https://tvoytrener.com/www/tren_zal/super_massa.html
 
 import XCTest
 import  EssentialFeed_2023
