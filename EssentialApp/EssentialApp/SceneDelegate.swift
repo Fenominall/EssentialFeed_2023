@@ -5,6 +5,7 @@
 //  Created by Fenominall on 05.01.2024.
 //
 
+import os
 import UIKit
 import CoreData
 import Combine
@@ -16,8 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     private lazy var httpClient: HTTPClient = {
-        URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        URLSessionHTTPClient(
+            session: URLSession(configuration: .ephemeral))
     }()
+    
+    private lazy var logger = Logger(
+        subsystem: "com.fenominall.EssentialApp",
+        category: "main")
     
     private lazy var store: FeedStore & FeedImageDataStore = {
         do {
@@ -25,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 storeURL: CoreDataFeedStore.storeURL)
         } catch {
             assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
+            logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             return NullStore()
         }
     }()
