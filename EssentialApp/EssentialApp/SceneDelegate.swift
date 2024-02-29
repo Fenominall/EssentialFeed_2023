@@ -20,7 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     private lazy var store: FeedStore & FeedImageDataStore = {
-        try! CoreDataFeedStore(storeURL: CoreDataFeedStore.storeURL)
+        do {
+            return try CoreDataFeedStore(
+                storeURL: CoreDataFeedStore.storeURL)
+        } catch {
+            return NullStore()
+        }
     }()
     
     private lazy var localFeedLoader: LocalFeedLoader = {
