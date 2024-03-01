@@ -629,8 +629,8 @@
 				4FCA81212A2AF97F00706BEC /* ManagedCache.swift */,
 				4FA8BA272A373EA500285525 /* CoreDataFeedStore.swift */,
 				4FB193272B47275500840D99 /* CoreDataFeedStore+FeedStore.swift */,
-				4FCA811C2A2AF6B300706BEC /* FeedStore.xcdatamodeld */,
 				4FB193252B471E5C00840D99 /* CoreDataFeedStore+FeedImageDataLoader.swift */,
+				4FCA811C2A2AF6B300706BEC /* FeedStore.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
