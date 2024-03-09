@@ -131,7 +131,6 @@ private extension FeedCache {
     func saveIgnoringResult(_ page: Paginated<FeedImage>) {
         saveIgnoringResult(page.items)
     }
-
 }
 
 extension Publisher {
