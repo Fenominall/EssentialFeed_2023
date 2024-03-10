@@ -16,12 +16,13 @@ class FeedImageDataStoreSpy: FeedImageDataStore {
     
     private var retrievalCompletions = [(FeedImageDataStore.RetrievalResult) -> Void]()
     private var insertionCompletions = [(FeedImageDataStore.InsertionResult) -> Void]()
-
+    private var insertionResult: Result<Void, Error>?
+    
     private(set) var receivedMessages = [Message]()
     
-    func insert(_ data: Data, for url: URL, completion: @escaping (InsertionResult) -> Void) {
+    func insert(_ data: Data, for url: URL) throws {
         receivedMessages.append(.insert(data: data, for: url))
-        insertionCompletions.append(completion)
+        try insertionResult?.get()
     }
     
     func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
@@ -38,10 +39,12 @@ class FeedImageDataStoreSpy: FeedImageDataStore {
     }
     
     func completeInsertion(with error: Error, at index: Int = 0) {
-        insertionCompletions[index](.failure(error))
+        insertionResult = .failure(error)
     }
     
     func completeInsertionSuccessfully(at index: Int = 0) {
-        insertionCompletions[index](.success(()))
+        insertionResult = .success(())
     }
+    // The sync API needs to stub the values before the method is invoked because we need to return the values immidiately syncronously
+    // Syncronous first strub and then calling the method
 }
