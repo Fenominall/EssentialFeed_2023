@@ -1,5 +1,5 @@
-//
 //  CoreDataFeedStore+FeedImageDataLoader.swift
+//
 //  EssentialFeed_2023
 //
 //  Created by Fenominall on 04.01.2024.

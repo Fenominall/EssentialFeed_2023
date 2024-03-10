@@ -1,8 +1,8 @@
 //
 //  FeedViewController.swift
 //  EssentialFeed_2023iOS
-//
 //  Created by Fenominall on 7/16/23.
+//
 //
 
 import UIKit
@@ -10,8 +10,8 @@ import EssentialFeed_2023
 
 public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
     
-    private(set) public var errorView = ErrorView()
     
+    private(set) public var errorView = ErrorView()
     private var loadingControllers = [IndexPath: CellController]()
     
     // # Step 1
