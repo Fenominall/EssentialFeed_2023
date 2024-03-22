@@ -26,6 +26,7 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
         isLoading = true
         
         cancellable = loader()
+            // Evrything down will be dispatched on the main queue regardless of what happening in the upstrem
             .dispatchOnMainQueue()
             .handleEvents(receiveCancel: { [weak self] in
                 self?.isLoading = false
