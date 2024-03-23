@@ -134,19 +134,6 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_load_doesNotDeliverResultsAferSUTInstacneHasBeenDeallocated() {
-        let store = FeedStoreSpy()
-        var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
-        
-        var receivedResults = [LocalFeedLoader.LoadResult]()
-        sut?.load(completion: { receivedResults.append($0) })
-        
-        sut = nil
-        store.completeRetrievalWithEmptyCache()
-        XCTAssertTrue(receivedResults.isEmpty)
-    }
-    
-    
     // MARK: - Helpers
     private func makeSUT(currentDate: @escaping () -> Date = Date.init,
                          file: StaticString = #filePath,
@@ -166,6 +153,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         file: StaticString = #filePath,
         line: UInt = #line) {
             let exp = expectation(description: "Wait for load completion")
+            action()
             
             sut.load() { receivedResult in
                 switch (receivedResult, expectedResult) {
@@ -179,7 +167,6 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
                 exp.fulfill()
             }
             
-            action()
             wait(for: [exp], timeout: 1.0)
         }
 }

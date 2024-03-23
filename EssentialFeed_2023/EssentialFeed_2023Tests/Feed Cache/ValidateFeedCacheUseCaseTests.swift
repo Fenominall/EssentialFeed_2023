@@ -19,8 +19,8 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
     func test_validateCache_deletesCacheOnRetrievalError() {
         let (sut, store) = makeSUT()
         
-        sut.validateCache { _ in }
         store.completeRetrieval(with: anyNSError())
+        sut.validateCache { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.retrieve ,.deleteCachedFeed])
     }
@@ -53,8 +53,8 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         let expirationTimestamp = fixedCurrentDate.minusFeedCacheMaxAge()
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
-        sut.validateCache { _ in }
         store.completeRetrieval(with: feed.local, timestamp: expirationTimestamp)
+        sut.validateCache { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
@@ -65,8 +65,8 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         let expiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
         
-        sut.validateCache { _ in }
         store.completeRetrieval(with: feed.local, timestamp: expiredTimestamp)
+        sut.validateCache { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
@@ -160,6 +160,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
     
     private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: LocalFeedLoader.ValidationResult, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "Wait for load completion")
+        action()
         
         sut.validateCache { receivedResult in
             switch (receivedResult, expectedResult) {
@@ -176,7 +177,6 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
             exp.fulfill()
         }
         
-        action()
         wait(for: [exp], timeout: 1.0)
     }
 }
