@@ -94,7 +94,9 @@ public extension LocalFeedLoader {
             // Because the types match between RemoteFeedLoader completion block and the Future completion block
             // we can just path the load function for the completion parameter
             // in this the 'self' is the RemoteFeddLoader itself
-            Future(self.load)
+            Future { completion in
+                completion(Result{ try self.load() })
+            }
         }
         .eraseToAnyPublisher()
     }
