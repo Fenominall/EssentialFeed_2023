@@ -125,7 +125,7 @@ extension Publisher {
 
 private extension FeedCache {
     func saveIgnoringResult(_ feed: [FeedImage]) {
-        save(feed) { _ in }
+        try? save(feed)
     }
     
     func saveIgnoringResult(_ page: Paginated<FeedImage>) {
@@ -201,13 +201,13 @@ extension Scheduler {
 }
 
 struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions>: Scheduler where SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
-
+    
     private let _now: () -> SchedulerTimeType
     private let _minimumTolerance: () -> SchedulerTimeType.Stride
     private let _schedule: (SchedulerOptions?,  @escaping () -> Void) -> Void
     private let _scheduleAfter: (SchedulerTimeType,  SchedulerTimeType.Stride, SchedulerOptions?,  @escaping () -> Void) -> Void
     private let _scheduleAfterInternal: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerTimeType.Stride, SchedulerOptions?,  @escaping () -> Void) -> Cancellable
-
+    
     init<S>(_ scheduler: S) where SchedulerTimeType == S.SchedulerTimeType, SchedulerOptions == S.SchedulerOptions, S: Scheduler {
         _now = { scheduler.now }
         _minimumTolerance = { scheduler.minimumTolerance }
@@ -221,7 +221,7 @@ struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions>: Scheduler 
     var minimumTolerance: SchedulerTimeType.Stride { _minimumTolerance() }
     
     func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
-         _schedule(options, action)
+        _schedule(options, action)
     }
     
     func schedule(after date: SchedulerTimeType, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
