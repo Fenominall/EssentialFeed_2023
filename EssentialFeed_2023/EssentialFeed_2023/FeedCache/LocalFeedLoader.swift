@@ -26,7 +26,7 @@ extension LocalFeedLoader: FeedCache {
 }
 
 
-extension LocalFeedLoader {    
+extension LocalFeedLoader {
     //  Query should only return a result and should not have side-effects (does not change the observable state of the system).
     public func load() throws -> [FeedImage] {
         if let cache = try store.retrieve(), FeedCachePolicy.validate(cache.timestamp, against: currentDate()) {
@@ -37,24 +37,20 @@ extension LocalFeedLoader {
 }
 
 extension LocalFeedLoader {
-    public typealias ValidationResult = Result<Void, Error>
-    
     private struct InvalidCache: Error {}
     
     // A Command changes the state of a system (side-effects) but does not return a value.
-    public func validateCache(completion: @escaping (ValidationResult) -> Void) {
-        completion(ValidationResult {
-            do {
-                if let cache = try store.retrieve(),
-                   !FeedCachePolicy.validate(
-                    cache.timestamp,
-                    against: self.currentDate()) {
-                    throw InvalidCache()
-                }
-            } catch {
-                try store.deleteCachedFeed()
+    public func validateCache() throws {
+        do {
+            if let cache = try store.retrieve(),
+               !FeedCachePolicy.validate(
+                cache.timestamp,
+                against: self.currentDate()) {
+                throw InvalidCache()
             }
-        })
+        } catch {
+            try store.deleteCachedFeed()
+        }
     }
 }
 

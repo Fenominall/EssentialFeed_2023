@@ -121,14 +121,11 @@ final class EssentialFeed_2023CacheIntegrationTests: XCTestCase {
     }
     
     private func validateCache(with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
-        let saveExp = expectation(description: "Wait for save completion")
-        loader.validateCache() { result in
-            if case let Result.failure(error) = result {
-                XCTFail("Expected to validate feed successfully, got error: \(error)", file: file, line: line)
-            }
-            saveExp.fulfill()
+        do {
+            try loader.validateCache()
+        } catch {
+            XCTFail("Expected to validate feed successfully, got error: \(error)", file: file, line: line)
         }
-        wait(for: [saveExp], timeout: 1.0)
     }
     
     private func expect(
@@ -136,18 +133,12 @@ final class EssentialFeed_2023CacheIntegrationTests: XCTestCase {
         toLoad expectedFeed: [FeedImage] ,
         file: StaticString = #file,
         line: UInt = #line) {
-            
-            let exp = expectation(description: "Wait for load completion")
-            sut.load { result in
-                switch result {
-                case let .success(loadedFeed):
-                    XCTAssertEqual(expectedFeed, loadedFeed, "Expected empty feed")
-                case let .failure(error):
-                    XCTFail("Expected successfull feed result, got \(error) instead")
-                }
-                exp.fulfill()
+            do {
+                let loadedFeed = try sut.load()
+                XCTAssertEqual(expectedFeed, loadedFeed, "Expected empty feed")
+            } catch {
+                XCTFail("Expected successfull feed result, got \(error) instead")
             }
-            wait(for: [exp], timeout: 1.0)
         }
     
     private func save(

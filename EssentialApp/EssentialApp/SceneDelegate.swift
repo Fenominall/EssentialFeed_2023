@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         qos: .userInitiated,
         attributes: .concurrent
     ).eraseToAnyScheduler()
-     
+    
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(
             session: URLSession(configuration: .ephemeral))
@@ -77,7 +77,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
-        localFeedLoader.validateCache { _ in }
+        do {
+            try localFeedLoader.validateCache()
+        } catch {
+            logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+        }
     }
     
     private func showComments(for image: FeedImage) {
@@ -186,12 +190,12 @@ extension Publisher {
     
     func logElapesTime(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
         var startTime = CACurrentMediaTime()
-
+        
         return handleEvents (
             receiveSubscription: { _ in
-            logger.trace("Started loading url: \(url)")
+                logger.trace("Started loading url: \(url)")
                 startTime = CACurrentMediaTime()
-        },
+            },
             receiveCompletion: { result in
                 let ellapsed = CACurrentMediaTime() - startTime
                 logger.trace("Finished loading url: \(url) in \(ellapsed) seconds")
